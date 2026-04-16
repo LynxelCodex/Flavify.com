@@ -612,12 +612,18 @@ img{display:block;width:100%;height:100%;object-fit:cover;}
 
 <!-- VIDEO OVERLAY -->
 <div class="video-overlay" id="videoOverlay">
+<<<<<<< HEAD
   <div class="video-header" id="videoHeader">
     <div><h3 id="videoTitle">Now Playing</h3><p id="videoSub">—</p></div>
     <div style="display:flex;gap:8px;">
       <button class="video-icon-btn video-pip" id="videoPip" title="Picture in Picture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><rect x="12" y="14" width="7" height="5" rx="1" ry="1"/></svg></button>
       <button class="video-icon-btn video-close" id="videoClose" title="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
+=======
+  <div class="video-header">
+    <div><h3 id="videoTitle">Now Playing</h3><p id="videoSub">—</p></div>
+    <button class="video-close" id="videoClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+>>>>>>> 2da7366179a6c1a07c6537bf7f2a47a0911227c3
   </div>
   <div class="video-frame" id="videoFrame">
     <div id="yt-player-wrapper"><div id="yt-player"></div></div>
@@ -1222,6 +1228,7 @@ function closeVideo(){
   ov.classList.remove('open');
   if(S.playing) setTimeout(()=>ytPlayer.playVideo(),100);
 }
+<<<<<<< HEAD
 let pipMode=false;
 function togglePip(){
   pipMode=!pipMode;
@@ -1232,6 +1239,8 @@ function togglePip(){
     window.pipCurrX=0; window.pipCurrY=0;
   }
 }
+=======
+>>>>>>> 2da7366179a6c1a07c6537bf7f2a47a0911227c3
 
 // ===================== INIT =====================
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1270,6 +1279,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('npPrev').onclick=prev;
   document.getElementById('npNext').onclick=next;
   document.getElementById('npSeekBar').oninput=e=>seekTo(parseFloat(e.target.value));
+<<<<<<< HEAD
 
   // VIDEO
   document.getElementById('videoBtn').onclick=openVideo;
@@ -1324,6 +1334,42 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('plPlayBtn').onclick=()=>{const pl=S.playlists.find(p=>p.id===S.currentPlaylistId);if(pl&&pl.tracks.length) loadTrack(pl.tracks[0]);};
   document.getElementById('plDeleteBtn').onclick=()=>{if(confirm('Delete this playlist?')&&S.currentPlaylistId) deletePlaylist(S.currentPlaylistId);};
 
+=======
+
+  // VIDEO
+  document.getElementById('videoBtn').onclick=openVideo;
+  document.getElementById('videoClose').onclick=closeVideo;
+
+  // AI PANEL
+  document.getElementById('aiToggleBtn').onclick=()=>{
+    S.aiPanelOpen=!S.aiPanelOpen;
+    document.getElementById('aiPanel').classList.toggle('open',S.aiPanelOpen);
+    if(S.aiPanelOpen) triggerAI();
+  };
+  document.getElementById('aiClose').onclick=()=>{S.aiPanelOpen=false;document.getElementById('aiPanel').classList.remove('open');};
+  document.querySelectorAll('.ai-tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.ai-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    S.aiTab=t.dataset.tab;
+    triggerAI();
+  }));
+  document.getElementById('mnAI').onclick=()=>{
+    S.aiPanelOpen=!S.aiPanelOpen;
+    document.getElementById('aiPanel').classList.toggle('open',S.aiPanelOpen);
+    if(S.aiPanelOpen) triggerAI();
+  };
+
+  // PLAYLISTS
+  document.getElementById('newPlaylistBtn').onclick=openModal;
+  document.getElementById('modalCancel').onclick=closeModal;
+  document.getElementById('modalCreate').onclick=createPlaylist;
+  document.getElementById('modalInput').addEventListener('keydown',e=>{if(e.key==='Enter') createPlaylist();if(e.key==='Escape') closeModal();});
+  document.getElementById('modalOverlay').onclick=e=>{if(e.target===e.currentTarget) closeModal();};
+  document.getElementById('plBackBtn').onclick=()=>{S.viewHistory.pop();showView(S.viewHistory[S.viewHistory.length-1]||'home');};
+  document.getElementById('plPlayBtn').onclick=()=>{const pl=S.playlists.find(p=>p.id===S.currentPlaylistId);if(pl&&pl.tracks.length) loadTrack(pl.tracks[0]);};
+  document.getElementById('plDeleteBtn').onclick=()=>{if(confirm('Delete this playlist?')&&S.currentPlaylistId) deletePlaylist(S.currentPlaylistId);};
+
+>>>>>>> 2da7366179a6c1a07c6537bf7f2a47a0911227c3
   // ARTIST
   document.getElementById('artistBackBtn').onclick=()=>{S.viewHistory.pop();showView(S.viewHistory[S.viewHistory.length-1]||'home');};
   document.getElementById('artistPlayBtn').onclick=()=>{if(S.artistIndices.length) loadTrack(S.artistIndices[0]);};
