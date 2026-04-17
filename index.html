@@ -151,11 +151,11 @@ a{color:inherit;text-decoration:none}
 
 /* ARTIST GRID */
 .artist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:18px}
-.acard{background:var(--card);border-radius:var(--r);padding:14px;cursor:pointer;transition:background var(--tr),transform .2s;text-align:center}
+.acard{background:var(--card);border-radius:var(--r);padding:14px;cursor:pointer;transition:background var(--tr),transform .2s;text-align:center;position:relative}
 .acard:hover{background:var(--card-h);transform:translateY(-3px)}
-.acard:hover .ac-play{opacity:1;transform:scale(1) translateY(0)}
+.acard:hover .ac-play{opacity:1;transform:scale(1)}
 .ac-avatar{width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;position:relative;margin-bottom:0;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.ac-play{position:absolute;bottom:4px;right:4px;width:38px;height:38px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8) translateY(6px);transition:opacity .2s,transform .2s}
+.ac-play{position:absolute;bottom:8px;right:8px;width:38px;height:38px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:opacity .2s,transform .2s;z-index:10}
 .ac-play svg{width:16px;height:16px;fill:#fff;margin-left:2px}
 .ac-name{display:none !important;height:0 !important;margin:0 !important;padding:0 !important;visibility:hidden !important}
 .ac-role{display:none !important;height:0 !important;margin:0 !important;padding:0 !important;visibility:hidden !important}
@@ -296,7 +296,7 @@ a{color:inherit;text-decoration:none}
 .np-prog-row{display:flex;align-items:center;gap:10px;width:100%}
 .np-prog-track{flex:1;height:5px;background:rgba(255,255,255,.15);border-radius:3px;position:relative;cursor:pointer}
 .np-prog-fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:3px;pointer-events:none;width:0%}
-.np-btns{display:flex;align-items:center;justify-content:center;gap:18px}
+.np-btns{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:8px}
 
 /* ── VIDEO OVERLAY ── */
 .vid-overlay{position:fixed;inset:0 0 var(--ph) 0;background:rgba(0,0,0,.96);backdrop-filter:blur(30px);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;gap:16px;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
@@ -411,6 +411,32 @@ body.theme-lava{
   --accent:#f97316;--accent2:#fb923c;--border:rgba(249,115,22,.12);
   --t1:#ffedd5;--t2:#fca5a5;--t3:#d97706;
 }
+/* ── EQUALIZER ── */
+@keyframes eqPulse{0%,100%{height:20%}50%{height:80%}}
+.equalizer-container{position:fixed;bottom:var(--ph);left:0;right:0;height:80px;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 0}
+.equalizer-container.hidden{display:none}
+.equalizer-bars{display:flex;align-items:center;justify-content:center;gap:2px;height:40px}
+.eq-bar{width:3px;background:linear-gradient(180deg,#ff4444,#ff6b6b);border-radius:2px;animation:eqPulse 0.4s ease-in-out infinite;animation-delay:var(--delay)}
+.eq-bar:nth-child(2){background:linear-gradient(180deg,#ff6b6b,#ff8787)}
+.eq-bar:nth-child(3){background:linear-gradient(180deg,#ff8787,#ffa5a5)}
+.eq-bar:nth-child(4){background:linear-gradient(180deg,#ffaa44,#ffcc55)}
+.eq-bar:nth-child(5){background:linear-gradient(180deg,#ffcc55,#ffdd66)}
+.eq-bar:nth-child(6){background:linear-gradient(180deg,#ffff44,#ffff66)}
+.eq-bar:nth-child(7){background:linear-gradient(180deg,#ccff33,#ddff44)}
+.eq-bar:nth-child(8){background:linear-gradient(180deg,#99ff33,#aaff44)}
+.eq-bar:nth-child(9){background:linear-gradient(180deg,#66ff33,#77ff44)}
+.eq-bar:nth-child(10){background:linear-gradient(180deg,#33ff33,#44ff44)}
+.eq-bar:nth-child(11){background:linear-gradient(180deg,#33ff99,#44ffaa)}
+.eq-bar:nth-child(12){background:linear-gradient(180deg,#33ffcc,#44ffdd)}
+.eq-bar:nth-child(13){background:linear-gradient(180deg,#33ffff,#44ffff)}
+.eq-bar:nth-child(14){background:linear-gradient(180deg,#33ccff,#44ddff)}
+.eq-bar:nth-child(15){background:linear-gradient(180deg,#3399ff,#44aaff)}
+.eq-bar:nth-child(16){background:linear-gradient(180deg,#3366ff,#4477ff)}
+.eq-bar:nth-child(17){background:linear-gradient(180deg,#6633ff,#7744ff)}
+.eq-bar:nth-child(18){background:linear-gradient(180deg,#9933ff,#aa44ff)}
+.eq-bar:nth-child(19){background:linear-gradient(180deg,#cc33ff,#dd44ff)}
+.eq-bar:nth-child(20){background:linear-gradient(180deg,#ff33cc,#ff44dd)}
+.equalizer-reflection{opacity:0.4;transform:scaleY(-1);mask-image:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 100%)}
 /* ── THEME BUTTON ── */
 .theme-btn{width:30px;height:30px;background:rgba(255,255,255,.07);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:inherit;font-size:1.6rem;transition:background var(--tr)}
 .theme-btn:hover{background:rgba(255,255,255,.14)}
@@ -724,6 +750,54 @@ body.theme-lava{
 </main>
 </div>
 
+<!-- EQUALIZER VISUALIZATION -->
+<div class="equalizer-container" id="equalizerContainer">
+  <div class="equalizer-bars">
+    <div class="eq-bar" style="--delay:0s"></div>
+    <div class="eq-bar" style="--delay:0.05s"></div>
+    <div class="eq-bar" style="--delay:0.1s"></div>
+    <div class="eq-bar" style="--delay:0.15s"></div>
+    <div class="eq-bar" style="--delay:0.2s"></div>
+    <div class="eq-bar" style="--delay:0.25s"></div>
+    <div class="eq-bar" style="--delay:0.3s"></div>
+    <div class="eq-bar" style="--delay:0.35s"></div>
+    <div class="eq-bar" style="--delay:0.4s"></div>
+    <div class="eq-bar" style="--delay:0.45s"></div>
+    <div class="eq-bar" style="--delay:0.5s"></div>
+    <div class="eq-bar" style="--delay:0.55s"></div>
+    <div class="eq-bar" style="--delay:0.6s"></div>
+    <div class="eq-bar" style="--delay:0.65s"></div>
+    <div class="eq-bar" style="--delay:0.7s"></div>
+    <div class="eq-bar" style="--delay:0.75s"></div>
+    <div class="eq-bar" style="--delay:0.8s"></div>
+    <div class="eq-bar" style="--delay:0.85s"></div>
+    <div class="eq-bar" style="--delay:0.9s"></div>
+    <div class="eq-bar" style="--delay:0.95s"></div>
+  </div>
+  <div class="equalizer-bars equalizer-reflection">
+    <div class="eq-bar" style="--delay:0s"></div>
+    <div class="eq-bar" style="--delay:0.05s"></div>
+    <div class="eq-bar" style="--delay:0.1s"></div>
+    <div class="eq-bar" style="--delay:0.15s"></div>
+    <div class="eq-bar" style="--delay:0.2s"></div>
+    <div class="eq-bar" style="--delay:0.25s"></div>
+    <div class="eq-bar" style="--delay:0.3s"></div>
+    <div class="eq-bar" style="--delay:0.35s"></div>
+    <div class="eq-bar" style="--delay:0.4s"></div>
+    <div class="eq-bar" style="--delay:0.45s"></div>
+    <div class="eq-bar" style="--delay:0.5s"></div>
+    <div class="eq-bar" style="--delay:0.55s"></div>
+    <div class="eq-bar" style="--delay:0.6s"></div>
+    <div class="eq-bar" style="--delay:0.65s"></div>
+    <div class="eq-bar" style="--delay:0.7s"></div>
+    <div class="eq-bar" style="--delay:0.75s"></div>
+    <div class="eq-bar" style="--delay:0.8s"></div>
+    <div class="eq-bar" style="--delay:0.85s"></div>
+    <div class="eq-bar" style="--delay:0.9s"></div>
+    <div class="eq-bar" style="--delay:0.95s"></div>
+  </div>
+</div>
+
 <!-- PLAYER BAR -->
 <footer class="player" id="playerBar">
   <div class="mob-prog" id="mobProg">
@@ -1004,16 +1078,19 @@ function updPlay(){
   const npi=document.getElementById('npPlayIcon');
   const pCover=document.getElementById('pCover');
   const npArt=document.getElementById('npArt').parentElement;
+  const eq=document.getElementById('equalizerContainer');
   if(playing){
     pi.innerHTML='<rect x="6" y="4" width="4" height="16" fill="#000"/><rect x="14" y="4" width="4" height="16" fill="#000"/>';
     npi.innerHTML='<rect x="6" y="4" width="4" height="16" fill="#fff"/><rect x="14" y="4" width="4" height="16" fill="#fff"/>';
     pCover.classList.add('spinning');
     npArt.classList.add('spinning');
+    if(eq)eq.classList.remove('hidden');
   }else{
     pi.innerHTML='<polygon points="5 3 19 12 5 21 5 3" fill="#000"/>';
     npi.innerHTML='<polygon points="5 3 19 12 5 21 5 3" fill="#fff"/>';
     pCover.classList.remove('spinning');
     npArt.classList.remove('spinning');
+    if(eq)eq.classList.add('hidden');
   }
 }
 function updVolIcon(){
@@ -1390,6 +1467,7 @@ function showView(v){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('equalizerContainer').classList.add('hidden');
   renderAll();
   const h=new Date().getHours();
   document.getElementById('greetTitle').textContent=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
