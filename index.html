@@ -393,12 +393,12 @@ body.theme-forest{
 .welcome-enter:hover{background:var(--accent2);transform:scale(1.02)}
 
 /* ── GUIDED TOUR ── */
-.tour-overlay{position:fixed;inset:0;z-index:8000;pointer-events:none}
-.tour-overlay.active{pointer-events:all}
+.tour-overlay{position:fixed;inset:0;z-index:8000;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.tour-overlay.active{pointer-events:all;opacity:1;visibility:visible}
 .tour-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s}
 .tour-overlay.active .tour-backdrop{background:rgba(0,0,0,.72)}
 .tour-spotlight{position:absolute;border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,.72);transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none;border:2px solid var(--accent);background:transparent}
-.tour-card{position:absolute;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;width:260px;box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:1;transition:all .35s cubic-bezier(.4,0,.2,1)}
+.tour-card{position:absolute;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;width:260px;box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:1;transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:auto}
 .tour-card::before{content:'';position:absolute;width:12px;height:12px;background:var(--card);border:1px solid var(--border);transform:rotate(45deg)}
 .tour-card.arrow-left::before{left:-7px;top:22px;border-right:none;border-top:none}
 .tour-card.arrow-right::before{right:-7px;top:22px;border-left:none;border-bottom:none}
@@ -1384,7 +1384,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
   function endTour(){
     tourOv.classList.remove('active');
-    document.getElementById('searchWrap').style.display='none';
+    // Restore searchWrap visibility based on current view
+    const currentView = document.querySelector('.view.active');
+    const isSearchView = currentView && currentView.id === 'view-search';
+    document.getElementById('searchWrap').style.display = isSearchView ? 'flex' : 'none';
   }
 
   tourNext.onclick=()=>{
