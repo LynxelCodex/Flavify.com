@@ -295,8 +295,8 @@ a{color:inherit;text-decoration:none}
 /* ── VIDEO OVERLAY ── */
 .vid-overlay{position:fixed;inset:0 0 var(--ph) 0;background:rgba(0,0,0,.96);backdrop-filter:blur(30px);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;gap:16px;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .vid-overlay.open{opacity:1;visibility:visible}
-.vid-overlay.mini{inset:auto;bottom:calc(var(--ph) + var(--mob-nav) + 14px);right:14px;width:380px;height:auto;border-radius:14px;background:rgba(18,18,28,.97);box-shadow:0 20px 50px rgba(0,0,0,.8),0 0 0 1px rgba(230,57,70,.15);padding:0;align-items:stretch;justify-content:flex-start;cursor:default;transition:opacity .4s,visibility .4s,box-shadow .2s}
-.vid-overlay.mini.dragging{box-shadow:0 28px 70px rgba(0,0,0,.95),0 0 0 1px rgba(230,57,70,.3);transition:none!important}
+.vid-overlay.mini{inset:auto;bottom:calc(var(--ph) + var(--mob-nav) + 14px);right:14px;width:380px;height:auto;border-radius:14px;background:rgba(18,18,28,.97);box-shadow:0 20px 50px rgba(0,0,0,.8),0 0 0 1px rgba(230,57,70,.15);padding:0;align-items:stretch;justify-content:flex-start;cursor:default;transition:opacity .4s,visibility .4s,box-shadow .2s,width .25s ease}
+.vid-overlay.mini.dragging,.vid-overlay.mini.resizing{box-shadow:0 28px 70px rgba(0,0,0,.95),0 0 0 1px rgba(230,57,70,.3);transition:none!important}
 .vid-overlay.mini .vid-main-header{position:static;padding:0 14px 0 0;background:none;border-bottom:1px solid var(--border)}
 .vid-overlay.mini .vid-container{width:100%;aspect-ratio:16/9;border-radius:0;box-shadow:none}
 .vid-overlay.mini .vid-mini-bar{display:flex}
@@ -304,6 +304,17 @@ a{color:inherit;text-decoration:none}
 .vid-drag-handle{display:none;align-items:center;justify-content:center;width:40px;height:40px;flex-shrink:0;cursor:grab;touch-action:none;border-radius:8px;transition:background .15s}
 .vid-drag-handle:active{cursor:grabbing;background:rgba(255,255,255,.08)}
 .vid-overlay.mini .vid-drag-handle{display:flex}
+/* resize handle */
+.vid-resize-handle{display:none;position:absolute;left:-4px;top:-4px;width:18px;height:18px;cursor:nwse-resize;z-index:20;touch-action:none}
+.vid-resize-handle::before{content:'';position:absolute;left:3px;top:3px;width:10px;height:10px;border-left:2px solid rgba(255,255,255,.35);border-top:2px solid rgba(255,255,255,.35);border-radius:2px 0 0 0;transition:border-color .2s}
+.vid-overlay.mini .vid-resize-handle{display:block}
+.vid-resize-handle:hover::before{border-color:var(--accent)}
+/* size picker */
+.vid-size-picker{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:10px;padding:6px;display:none;flex-direction:row;gap:4px;box-shadow:0 8px 24px rgba(0,0,0,.6);z-index:30;white-space:nowrap}
+.vid-size-picker.open{display:flex}
+.vid-size-opt{padding:5px 12px;border-radius:6px;font-size:1.1rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s;border:1px solid transparent;text-align:center}
+.vid-size-opt:hover{color:var(--t1);background:rgba(255,255,255,.08)}
+.vid-size-opt.active{color:var(--accent);border-color:rgba(230,57,70,.3);background:rgba(230,57,70,.1)}
 .drag-dots{display:flex;flex-direction:column;gap:3px;pointer-events:none}
 .drag-dots span{display:flex;gap:3px}
 .drag-dots span i{display:block;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3)}
@@ -472,6 +483,8 @@ body.theme-forest{
 
   /* mini video player */
   .vid-overlay.mini{bottom:calc(var(--ph) + 54px + 10px);right:8px;left:auto;width:min(360px, calc(100vw - 16px))}
+  .vid-resize-handle{left:auto;right:-4px;top:-4px;cursor:nesw-resize}
+  .vid-resize-handle::before{border-left:none;border-right:2px solid rgba(255,255,255,.35);border-radius:0 2px 0 0}
 
   /* NP panel */
   .np-panel{bottom:calc(var(--ph) + 54px)}
@@ -750,10 +763,18 @@ body.theme-forest{
     <img class="vmb-cover" id="vmbCover" src="" alt=""/>
     <div class="vmb-meta"><div class="vmb-title" id="vmbTitle"></div><div class="vmb-artist" id="vmbArtist"></div></div>
     <div class="vmb-ctrls">
+      <button class="vmb-btn" id="vidSizeBtn" title="Resize" style="position:relative"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="15 3 21 3 21 9"/><line x1="21" y1="3" x2="14" y2="10"/><polyline points="9 21 3 21 3 15"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        <div class="vid-size-picker" id="vidSizePicker">
+          <div class="vid-size-opt" data-size="s">S</div>
+          <div class="vid-size-opt active" data-size="m">M</div>
+          <div class="vid-size-opt" data-size="l">L</div>
+        </div>
+      </button>
       <button class="vmb-btn" id="vidMiniExpand" title="Expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
       <button class="vmb-btn" id="vidMiniClose" title="Close" style="border-color:rgba(230,60,60,.2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
   </div>
+  <div class="vid-resize-handle" id="vidResizeHandle" title="Drag to resize"></div>
 </div>
 
 <!-- MOBILE NAV -->
@@ -1109,7 +1130,7 @@ function initMiniDrag(){
   function getPos(e){return e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY}}
   function onStart(e){
     if(!vo.classList.contains('mini'))return;
-    if(e.target.closest('.vid-btn,.vmb-btn,.vid-info'))return;
+    if(e.target.closest('.vid-btn,.vmb-btn,.vid-info,.vid-resize-handle,.vid-size-picker'))return;
     dragging=true;
     const p=getPos(e);startX=p.x;startY=p.y;
     const rect=vo.getBoundingClientRect();
@@ -1149,6 +1170,91 @@ function initMiniDrag(){
   document.addEventListener('touchmove',onMove,{passive:false});
   document.addEventListener('mouseup',onEnd);
   document.addEventListener('touchend',onEnd);
+}
+
+function initMiniResize(){
+  const vo=document.getElementById('vidOverlay');
+  const resizeHandle=document.getElementById('vidResizeHandle');
+  const sizeBtn=document.getElementById('vidSizeBtn');
+  const sizePicker=document.getElementById('vidSizePicker');
+  let currentSize='m';
+
+  // Size presets — adapt to screen
+  function getSizes(){
+    const W=window.innerWidth;
+    if(W<=480) return {s:200,m:Math.min(320,W-16),l:W-16};
+    if(W<=768) return {s:240,m:Math.min(360,W-16),l:Math.min(480,W-16)};
+    return {s:280,m:380,l:520};
+  }
+
+  function applySize(key){
+    const sizes=getSizes();
+    currentSize=key;
+    vo.style.width=sizes[key]+'px';
+    document.querySelectorAll('.vid-size-opt').forEach(el=>{
+      el.classList.toggle('active',el.dataset.size===key);
+    });
+  }
+
+  // Size picker toggle
+  sizeBtn.addEventListener('click',e=>{
+    e.stopPropagation();
+    sizePicker.classList.toggle('open');
+  });
+  document.querySelectorAll('.vid-size-opt').forEach(el=>{
+    el.addEventListener('click',e=>{
+      e.stopPropagation();
+      applySize(el.dataset.size);
+      sizePicker.classList.remove('open');
+    });
+  });
+  document.addEventListener('click',()=>sizePicker.classList.remove('open'));
+
+  // Corner drag resize (desktop)
+  let resizing=false,rStartX,rStartY,rStartW;
+  function rGetPos(e){return e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY}}
+  function rStart(e){
+    if(!vo.classList.contains('mini'))return;
+    resizing=true;
+    const p=rGetPos(e);
+    rStartX=p.x;rStartY=p.y;
+    rStartW=vo.offsetWidth;
+    vo.classList.add('resizing');
+    if(e.cancelable)e.preventDefault();
+  }
+  function rMove(e){
+    if(!resizing)return;
+    if(e.cancelable)e.preventDefault();
+    const p=rGetPos(e);
+    const W=window.innerWidth;
+    const mob=W<=768;
+    // On mobile resize handle is on the right, on desktop on left
+    const dx=mob?(p.x-rStartX):-(p.x-rStartX);
+    const sizes=getSizes();
+    const minW=sizes.s-40;
+    const maxW=mob?W-16:Math.min(640,W-40);
+    const newW=Math.max(minW,Math.min(maxW,rStartW+dx));
+    vo.style.width=newW+'px';
+    // Clear active size indicator during free resize
+    document.querySelectorAll('.vid-size-opt').forEach(el=>el.classList.remove('active'));
+  }
+  function rEnd(){
+    if(!resizing)return;
+    resizing=false;vo.classList.remove('resizing');
+    // Snap to nearest preset
+    const w=vo.offsetWidth;
+    const sizes=getSizes();
+    const entries=Object.entries(sizes);
+    let closest=entries[0];
+    entries.forEach(([k,v])=>{if(Math.abs(v-w)<Math.abs(closest[1]-w))closest=[k,v]});
+    applySize(closest[0]);
+  }
+  resizeHandle.addEventListener('mousedown',rStart);
+  resizeHandle.addEventListener('touchstart',rStart,{passive:false});
+  document.addEventListener('mousemove',rMove);
+  document.addEventListener('touchmove',rMove,{passive:false});
+  document.addEventListener('mouseup',rEnd);
+  document.addEventListener('touchend',rEnd);
 }
 
 function initNPSwipe(){
@@ -1258,19 +1364,21 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 
   initMiniDrag();
+  initMiniResize();
   initNPSwipe();
 
   // ── GUIDED TOUR ──
+  const isMobile=()=>window.innerWidth<=768;
   const tourSteps=[
     {
-      target:'sidebar',
-      title:'Sidebar navigation',
-      desc:'Browse Home, Search, and Library. Your liked songs and playlists live here too.',
-      arrow:'arrow-right',
-      offset:{x:8,y:0}
+      target:()=>isMobile()?'mobNav':'sidebar',
+      title:()=>isMobile()?'Navigation bar':'Sidebar navigation',
+      desc:()=>isMobile()?'Tap Home, Search, or Library to navigate between sections.':'Browse Home, Search, and Library. Your liked songs and playlists live here too.',
+      arrow:()=>isMobile()?'arrow-bottom':'arrow-right',
+      offset:{x:0,y:0}
     },
     {
-      target:'view-home',
+      target:()=>isMobile()?'greetTitle':'view-home',
       title:'Home feed',
       desc:'Quick-access cards for your top tracks, followed by Artists and All Tracks grids. Click any card to play instantly.',
       arrow:'arrow-top',
@@ -1288,29 +1396,29 @@ document.addEventListener('DOMContentLoaded',()=>{
       target:'themeWrap',
       title:'Theme switcher',
       desc:'Tap the palette button to switch between Dark Red, Ocean Blue, and Forest Green themes.',
-      arrow:'arrow-top',
+      arrow:()=>isMobile()?'arrow-left':'arrow-top',
       offset:{x:0,y:8}
     },
     {
       target:'playerBar',
       title:'Player bar',
-      desc:'Controls for play/pause, skip, shuffle, and repeat. Drag the progress bar to seek. Click the cover art to open the full Now Playing panel.',
-      arrow:'arrow-bottom',
-      offset:{x:0,y:-8}
+      desc:()=>isMobile()?'Controls for play/pause and skip. Tap the cover art to open Now Playing.':'Controls for play/pause, skip, shuffle, and repeat. Drag the progress bar to seek. Click the cover art to open the full Now Playing panel.',
+      arrow:()=>isMobile()?'arrow-top':'arrow-bottom',
+      offset:{x:0,y:0}
     },
     {
       target:'btnVideo',
       title:'Video viewer',
       desc:'Watch the YouTube video for the current track in a floating mini-player. Drag it anywhere on screen.',
-      arrow:'arrow-top',
+      arrow:()=>isMobile()?'arrow-left':'arrow-top',
       offset:{x:0,y:8}
     },
     {
       target:'btnLike',
       title:'Like a track',
-      desc:'Heart any track while it\'s playing. Find all your liked songs under "Liked Songs" in the sidebar.',
-      arrow:'arrow-bottom',
-      offset:{x:0,y:-8}
+      desc:()=>isMobile()?'Heart any track while it\'s playing. Find all your liked songs in the Library.':'Heart any track while it\'s playing. Find all your liked songs under "Liked Songs" in the sidebar.',
+      arrow:()=>isMobile()?'arrow-top':'arrow-bottom',
+      offset:{x:0,y:0}
     }
   ];
 
@@ -1337,7 +1445,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   function positionTour(){
     const step=tourSteps[tourIdx];
     if(step.pre)step.pre();
-    const el=document.getElementById(step.target);
+    const targetId=typeof step.target==='function'?step.target():step.target;
+    const el=document.getElementById(targetId);
     if(!el)return;
     const r=el.getBoundingClientRect();
     const pad=8;
@@ -1347,23 +1456,29 @@ document.addEventListener('DOMContentLoaded',()=>{
     tourSpot.style.height=(r.height+pad*2)+'px';
 
     tourLabel.textContent='Step '+(tourIdx+1)+' of '+tourSteps.length;
-    tourTitle.textContent=step.title;
-    tourDesc.textContent=step.desc;
-    tourCard.className='tour-card '+step.arrow;
+    const titleVal=typeof step.title==='function'?step.title():step.title;
+    const descVal=typeof step.desc==='function'?step.desc():step.desc;
+    tourTitle.textContent=titleVal;
+    tourDesc.textContent=descVal;
+    const arrowVal=typeof step.arrow==='function'?step.arrow():step.arrow;
+    tourCard.className='tour-card '+arrowVal;
     tourNext.textContent=tourIdx===tourSteps.length-1?'Done':'Next';
 
-    const cW=268,cH=tourCard.offsetHeight||170;
+    const mob=isMobile();
+    const cW=mob?Math.min(240,window.innerWidth-24):268;
+    tourCard.style.width=cW+'px';
+    const cH=tourCard.offsetHeight||170;
     const vW=window.innerWidth,vH=window.innerHeight;
     let cx,cy;
     const ox=step.offset.x||0,oy=step.offset.y||0;
 
-    if(step.arrow==='arrow-right'){
+    if(arrowVal==='arrow-right'){
       cx=r.right+14+ox;
       cy=r.top+r.height/2-22+oy;
-    } else if(step.arrow==='arrow-left'){
+    } else if(arrowVal==='arrow-left'){
       cx=r.left-cW-14+ox;
       cy=r.top+r.height/2-22+oy;
-    } else if(step.arrow==='arrow-top'){
+    } else if(arrowVal==='arrow-top'){
       cx=r.left+r.width/2-cW/2+ox;
       cy=r.bottom+14+oy;
     } else {
