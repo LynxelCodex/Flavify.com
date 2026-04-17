@@ -152,11 +152,11 @@ a{color:inherit;text-decoration:none}
 .acard{background:var(--card);border-radius:var(--r);padding:14px;cursor:pointer;transition:background var(--tr),transform .2s;text-align:center}
 .acard:hover{background:var(--card-h);transform:translateY(-3px)}
 .acard:hover .ac-play{opacity:1;transform:scale(1) translateY(0)}
-.ac-avatar{width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;position:relative;margin-bottom:12px;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.ac-avatar{width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;position:relative;margin-bottom:0;box-shadow:0 6px 20px rgba(0,0,0,.4)}
 .ac-play{position:absolute;bottom:4px;right:4px;width:38px;height:38px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8) translateY(6px);transition:opacity .2s,transform .2s}
 .ac-play svg{width:16px;height:16px;fill:#fff;margin-left:2px}
-.ac-name{font-size:1.35rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;display:none}
-.ac-role{font-size:1.1rem;color:var(--t2);display:none}
+.ac-name{display:none !important;height:0 !important;margin:0 !important;padding:0 !important;visibility:hidden !important}
+.ac-role{display:none !important;height:0 !important;margin:0 !important;padding:0 !important;visibility:hidden !important}
 
 /* CATEGORIES */
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
