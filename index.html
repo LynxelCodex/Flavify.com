@@ -34,6 +34,7 @@ a{color:inherit;text-decoration:none}
 @keyframes coverPop{0%{transform:scale(.93)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
 @keyframes eq{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes albumSpin{to{transform:rotate(360deg)}}
 @keyframes floatHeart{0%{opacity:1;transform:translate(var(--fh-x,0),0) scale(0) rotate(var(--fh-r,0deg))}15%{opacity:1;transform:translate(var(--fh-x,0),-10px) scale(1.2) rotate(var(--fh-r,0deg))}100%{opacity:0;transform:translate(calc(var(--fh-x,0) * 2.5),var(--fh-y,-80px)) scale(.4) rotate(calc(var(--fh-r,0deg) + 30deg))}}
 .float-heart{position:fixed;pointer-events:none;z-index:9999;font-size:var(--fh-s,18px);animation:floatHeart var(--fh-d,.85s) cubic-bezier(.2,.6,.3,1) forwards;color:var(--accent)}
 
@@ -219,7 +220,8 @@ a{color:inherit;text-decoration:none}
   z-index:1000;
 }
 .p-left{display:flex;align-items:center;gap:11px;min-width:0}
-.p-cover{width:50px;height:50px;border-radius:7px;overflow:hidden;flex-shrink:0;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5);transition:transform .15s ease}
+.p-cover{width:50px;height:50px;border-radius:50%;overflow:hidden;flex-shrink:0;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5);transition:transform .15s ease}
+.p-cover.spinning{animation:albumSpin 3s linear infinite}
 .p-cover:active{transform:scale(.93)}
 .p-meta{min-width:0;flex:1}
 .p-title{display:block;font-size:1.3rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
@@ -284,7 +286,8 @@ a{color:inherit;text-decoration:none}
 .np-close{position:absolute;top:28px;left:50%;transform:translateX(-50%);color:var(--t2);transition:color var(--tr)}
 .np-close:hover{color:var(--t1)}
 .np-close svg{width:26px;height:26px}
-.np-art{width:min(300px,75vw);aspect-ratio:1;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);transition:transform .3s ease}
+.np-art{width:min(300px,75vw);aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);transition:transform .3s ease}
+.np-art.spinning{animation:albumSpin 3s linear infinite}
 .np-art.pop{animation:coverPop .35s ease}
 .np-info{text-align:center}
 .np-title{display:block;font-size:2rem;font-weight:700;margin-bottom:5px}
@@ -378,6 +381,36 @@ body.theme-forest{
   --accent:#52b788;--accent2:#74c69d;--border:rgba(82,183,136,.1);
   --t1:#d8f3dc;--t2:#74a67e;--t3:#3a5e40;
 }
+body.theme-sunset{
+  --bg:#150a0f;--sidebar:#1a0d12;--surface:#251117;--card:#331820;--card-h:#3d1f28;
+  --accent:#d946ef;--accent2:#f472b6;--border:rgba(217,70,239,.12);
+  --t1:#fce7f3;--t2:#c084fc;--t3:#8b5cf6;
+}
+body.theme-midnight{
+  --bg:#0a0e27;--sidebar:#0e1238;--surface:#131f4a;--card:#1a2a5c;--card-h:#1f356e;
+  --accent:#3b82f6;--accent2:#60a5fa;--border:rgba(59,130,246,.1);
+  --t1:#dbeafe;--t2:#60a5fa;--t3:#1e40af;
+}
+body.theme-emerald{
+  --bg:#050f0c;--sidebar:#051f18;--surface:#0d3d33;--card:#134e3a;--card-h:#155e4a;
+  --accent:#10b981;--accent2:#34d399;--border:rgba(16,185,129,.1);
+  --t1:#d1fae5;--t2:#6ee7b7;--t3:#047857;
+}
+body.theme-coral{
+  --bg:#1a0a0a;--sidebar:#240d0d;--surface:#3a1515;--card:#5a2020;--card-h:#6a2828;
+  --accent:#ff6b6b;--accent2:#ff8787;--border:rgba(255,107,107,.12);
+  --t1:#ffe0e0;--t2:#ff9999;--t3:#ff4444;
+}
+body.theme-aurora{
+  --bg:#0f080f;--sidebar:#1a0f28;--surface:#25184a;--card:#362566;--card-h:#42307d;
+  --accent:#a855f7;--accent2:#d8b4fe;--border:rgba(168,85,247,.1);
+  --t1:#f3e8ff;--t2:#d8b4fe;--t3:#7c3aed;
+}
+body.theme-lava{
+  --bg:#1a0a00;--sidebar:#2a1200;--surface:#4a2000;--card:#6a3000;--card-h:#7d3a00;
+  --accent:#f97316;--accent2:#fb923c;--border:rgba(249,115,22,.12);
+  --t1:#ffedd5;--t2:#fca5a5;--t3:#d97706;
+}
 /* ── THEME BUTTON ── */
 .theme-btn{width:30px;height:30px;background:rgba(255,255,255,.07);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:inherit;font-size:1.6rem;transition:background var(--tr)}
 .theme-btn:hover{background:rgba(255,255,255,.14)}
@@ -470,7 +503,7 @@ body.theme-forest{
   }
   .mob-prog{display:block}
   .p-left{flex:1;min-width:0;gap:10px;padding:0}
-  .p-cover{width:46px;height:46px;border-radius:8px;flex-shrink:0}
+  .p-cover{width:46px;height:46px;border-radius:50%;flex-shrink:0}
   .p-meta{flex:1;min-width:0}
   .p-like{display:flex;margin-right:4px}
   /* centre controls – only prev/play/next */
@@ -602,6 +635,24 @@ body.theme-forest{
           </div>
           <div class="theme-option" data-theme="theme-forest">
             <span class="theme-swatch" style="background:#52b788"></span>Forest Green
+          </div>
+          <div class="theme-option" data-theme="theme-sunset">
+            <span class="theme-swatch" style="background:#d946ef"></span>Sunset Purple
+          </div>
+          <div class="theme-option" data-theme="theme-midnight">
+            <span class="theme-swatch" style="background:#3b82f6"></span>Midnight
+          </div>
+          <div class="theme-option" data-theme="theme-emerald">
+            <span class="theme-swatch" style="background:#10b981"></span>Emerald
+          </div>
+          <div class="theme-option" data-theme="theme-coral">
+            <span class="theme-swatch" style="background:#ff6b6b"></span>Coral
+          </div>
+          <div class="theme-option" data-theme="theme-aurora">
+            <span class="theme-swatch" style="background:#a855f7"></span>Aurora
+          </div>
+          <div class="theme-option" data-theme="theme-lava">
+            <span class="theme-swatch" style="background:#f97316"></span>Lava
           </div>
         </div>
       </div>
@@ -951,12 +1002,18 @@ function updPlay(){
   const playing=state.playing;
   const pi=document.getElementById('playIcon');
   const npi=document.getElementById('npPlayIcon');
+  const pCover=document.getElementById('pCover');
+  const npArt=document.getElementById('npArt').parentElement;
   if(playing){
     pi.innerHTML='<rect x="6" y="4" width="4" height="16" fill="#000"/><rect x="14" y="4" width="4" height="16" fill="#000"/>';
     npi.innerHTML='<rect x="6" y="4" width="4" height="16" fill="#fff"/><rect x="14" y="4" width="4" height="16" fill="#fff"/>';
+    pCover.classList.add('spinning');
+    npArt.classList.add('spinning');
   }else{
     pi.innerHTML='<polygon points="5 3 19 12 5 21 5 3" fill="#000"/>';
     npi.innerHTML='<polygon points="5 3 19 12 5 21 5 3" fill="#fff"/>';
+    pCover.classList.remove('spinning');
+    npArt.classList.remove('spinning');
   }
 }
 function updVolIcon(){
