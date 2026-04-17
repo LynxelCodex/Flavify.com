@@ -1366,7 +1366,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const vo=document.getElementById('vidOverlay');
     if(vo.classList.contains('open')&&!vo.classList.contains('mini'))closeVideo();
     else if(vo.classList.contains('mini'))expandVideo();
-    else{if(state.idx===-1)return;openVideo();}
+    else{if(state.idx===-1)return;openVideo();miniVideo();}
   };
   document.getElementById('vidClose').onclick=closeVideo;
   document.getElementById('vidMini').onclick=miniVideo;
