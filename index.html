@@ -267,7 +267,8 @@ body::after{background:radial-gradient(circle at 50% 0%, color-mix(in srgb, var(
 .ctrl.sec{color:var(--t3);width:30px;height:30px}
 .ctrl.sec:hover{color:var(--t1);transform:scale(1.1)}
 .ctrl.sec svg{width:17px;height:17px;stroke-width:1.8}
-.ctrl.sec.on{color:var(--accent)}
+.ctrl.sec.on{color:var(--accent);font-weight:700;text-shadow:0 0 8px rgba(230,57,70,0.6)}
+.ctrl.sec.on svg{filter:drop-shadow(0 0 4px rgba(230,57,70,0.8))}
 .ctrl.pri{width:38px;height:38px;background:var(--t1);color:#000}
 .ctrl.pri:hover{transform:scale(1.08);box-shadow:0 0 0 4px rgba(255,255,255,.12)}
 .ctrl.pri svg{width:17px;height:17px;fill:#000;color:#000;stroke:none}
@@ -1047,7 +1048,7 @@ const DEFAULT_SONGS=[
 if(localStorage.getItem(VER_KEY)!==VER){localStorage.removeItem(SONGS_KEY);localStorage.setItem(VER_KEY,VER)}
 let songs=JSON.parse(localStorage.getItem(SONGS_KEY)||'null')||DEFAULT_SONGS;
 function saveSongs(){localStorage.setItem(SONGS_KEY,JSON.stringify(songs))}
-const state={idx:-1,playing:false,vol:70,muted:false,shuffle:false,repeat:false,liked:new Set(),recent:[],artistIdxs:[],ytReady:false,progInt:null};
+const state={idx:-1,playing:false,vol:70,muted:false,shuffle:false,repeat:'off',liked:new Set(),recent:[],artistIdxs:[],ytReady:false,progInt:null};
 let ytP=null,viewHist=['home'];
 
 (function(){const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s)})();
@@ -1100,14 +1101,35 @@ function playPause(){
   state.playing?ytP.pauseVideo():ytP.playVideo();
 }
 function nextTrack(){
-  if(state.shuffle){let n;do{n=Math.floor(Math.random()*songs.length)}while(n===state.idx&&songs.length>1);loadTrack(n)}
-  else loadTrack((state.idx+1)%songs.length);
+  if(state.shuffle&&songs.length>0){
+    let n;
+    do{n=Math.floor(Math.random()*songs.length)}while(n===state.idx&&songs.length>1);
+    loadTrack(n);
+  }else{
+    const next=(state.idx+1)%songs.length;
+    // If repeat is off and we'd wrap around, stop playback
+    if(state.repeat==='off'&&next===0&&state.idx===songs.length-1){
+      state.playing=false;updPlay();stopProg();return;
+    }
+    loadTrack(next);
+  }
 }
 function prevTrack(){
   if(state.ytReady&&ytP.getCurrentTime&&ytP.getCurrentTime()>3)ytP.seekTo(0,true);
   else loadTrack((state.idx-1+songs.length)%songs.length);
 }
-function handleEnd(){state.repeat?(ytP.seekTo(0,true),ytP.playVideo()):nextTrack()}
+function handleEnd(){
+  if(state.repeat==='one'&&state.ytReady&&state.idx>=0){
+    // Repeat-one: reload the same track for reliable replay
+    ytP.loadVideoById(songs[state.idx].vid);
+    state.playing=true;updPlay();startProg();
+  }else if(state.repeat==='all'||state.shuffle){
+    nextTrack();
+  }else{
+    // repeat is 'off'
+    nextTrack();
+  }
+}
 function setVol(v){state.vol=Math.max(0,Math.min(100,v));if(state.ytReady&&ytP.setVolume)ytP.setVolume(state.vol);document.getElementById('volFill').style.width=state.vol+'%';document.getElementById('volSlider').value=state.vol;updVolIcon()}
 function toggleMute(){state.muted=!state.muted;state.muted?(ytP.mute(),document.getElementById('volFill').style.width='0%'):(ytP.unMute(),document.getElementById('volFill').style.width=state.vol+'%');updVolIcon()}
 function startProg(){clearInterval(state.progInt);state.progInt=setInterval(updProg,500)}
@@ -1160,6 +1182,15 @@ function updVolIcon(){
   if(v===0)el.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
   else if(v<50)el.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07"/>';
   else el.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>';
+}
+function updRepeatIcon(btn){
+  const svg=btn.querySelector('svg');
+  if(!svg)return;
+  if(state.repeat==='one'){
+    svg.innerHTML='<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/><text x="12" y="14" text-anchor="middle" font-size="9" font-weight="bold" fill="currentColor" stroke="none" style="font-family:Inter,sans-serif">1</text>';
+  }else{
+    svg.innerHTML='<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/>';
+  }
 }
 function updLike(){
   const btn=document.getElementById('btnLike');
@@ -1614,8 +1645,21 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('npPlay').onclick=playPause;
   document.getElementById('npNext').onclick=nextTrack;
   document.getElementById('npPrev').onclick=prevTrack;
-  document.getElementById('btnShuffle').onclick=function(){state.shuffle=!state.shuffle;this.classList.toggle('on')};
-  document.getElementById('btnRepeat').onclick=function(){state.repeat=!state.repeat;this.classList.toggle('on')};
+  document.getElementById('btnShuffle').onclick=function(e){
+    e.preventDefault();
+    state.shuffle=!state.shuffle;
+    this.classList.toggle('on',state.shuffle);
+  };
+  document.getElementById('btnRepeat').onclick=function(e){
+    e.preventDefault();
+    // Cycle: off → all → one → off
+    if(state.repeat==='off') state.repeat='all';
+    else if(state.repeat==='all') state.repeat='one';
+    else state.repeat='off';
+    this.classList.toggle('on',state.repeat!=='off');
+    // Update icon to show repeat-one indicator
+    updRepeatIcon(this);
+  };
   document.getElementById('quotePrev').onclick=prevQuote;
   document.getElementById('quoteNext').onclick=nextQuote;
 
@@ -1629,6 +1673,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   },false);
 
 
+  document.getElementById('seekBar').oninput=e=>seekTo(parseFloat(e.target.value));
   document.getElementById('npSeek').oninput=e=>seekTo(parseFloat(e.target.value));
   document.getElementById('mobSeek').oninput=e=>seekTo(parseFloat(e.target.value));
   document.getElementById('volSlider').oninput=e=>setVol(parseInt(e.target.value));
