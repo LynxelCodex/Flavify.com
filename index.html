@@ -385,6 +385,7 @@ body::after{background:radial-gradient(circle at 50% 0%, color-mix(in srgb, var(
 .np-art{width:min(300px,75vw);aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);transition:transform .3s ease}
 .np-art.spinning{animation:albumSpin 3s linear infinite}
 .np-art.pop{animation:coverPop .35s ease}
+.np-art.pop.spinning{animation:albumSpin 3s linear infinite}
 .np-info{text-align:center}
 .np-title{display:block;font-size:2rem;font-weight:700;margin-bottom:5px}
 .np-artist{display:block;font-size:1.5rem;color:var(--t2)}
@@ -1222,7 +1223,7 @@ const DEFAULT_SONGS=[
   {title:'Makalimutan ka',artist:'SunKissed Lola',cover:'https://yt3.googleusercontent.com/DFQM1uZWqpk9j721Vtj_sAWECXwp_cElMyn-ChTs5mhOM14SZB0QqY65OebaAYoxXiRo0i4hXQ=s120-c-k-c0x00ffffff-no-rj',vid:'C83ksIyeAPg'},
   {title:'Damag',artist:'SunKissed Lola',cover:'https://yt3.googleusercontent.com/DFQM1uZWqpk9j721Vtj_sAWECXwp_cElMyn-ChTs5mhOM14SZB0QqY65OebaAYoxXiRo0i4hXQ=s120-c-k-c0x00ffffff-no-rj',vid:'BdpFRTbjvn4'},
   
-   {title:'Kathang Isip',artist:'Ben&Ben',cover:'https://yt3.googleusercontent.com/MOEUUknvWyTwAAbb3uOUKaS53rhVZD0_XSvzLN-upeWsoUP8xkVZwHSG6cVpU0iMsOgVztKL=s120-c-k-c0x00ffffff-no-rj',vid:'9mL8Jj3Y6bE'},
+   {title:'Kathang Isip',artist:'Ben&Ben',cover:'https://yt3.googleusercontent.com/MOEUUknvWyTwAAbb3uOUKaS53rhVZD0_XSvzLN-upeWsoUP8xkVZwHSG6cVpU0iMsOgVztKL=s120-c-k-c0x00ffffff-no-rj',vid:'sKa8HtWgOxk'},
   {title:'Maybe The Night',artist:'Ben&Ben',cover:'https://yt3.googleusercontent.com/MOEUUknvWyTwAAbb3uOUKaS53rhVZD0_XSvzLN-upeWsoUP8xkVZwHSG6cVpU0iMsOgVztKL=s120-c-k-c0x00ffffff-no-rj',vid:'hJhVURhdLEg'},
    {title:'Lifetime',artist:'Ben&Ben',cover:'https://yt3.googleusercontent.com/MOEUUknvWyTwAAbb3uOUKaS53rhVZD0_XSvzLN-upeWsoUP8xkVZwHSG6cVpU0iMsOgVztKL=s120-c-k-c0x00ffffff-no-rj',vid:'Vd4E1wBRhdA'},
    {title:'Sa Susunod Na Habang Buhay',artist:'Ben&Ben',cover:'https://yt3.googleusercontent.com/MOEUUknvWyTwAAbb3uOUKaS53rhVZD0_XSvzLN-upeWsoUP8xkVZwHSG6cVpU0iMsOgVztKL=s120-c-k-c0x00ffffff-no-rj',vid:'W3CKEzGPwnc'},
