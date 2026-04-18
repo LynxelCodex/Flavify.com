@@ -511,11 +511,10 @@ body.theme-lava{
   --t1:#ffedd5;--t2:#fca5a5;--t3:#d97706;
 }
 /* ── EQUALIZER ── */
-@keyframes eqPulse{0%,100%{height:20%}50%{height:80%}}
 .equalizer-container{position:fixed;bottom:var(--ph);left:0;right:0;height:80px;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 0}
 .equalizer-container.hidden{display:none}
 .equalizer-bars{display:flex;align-items:center;justify-content:center;gap:2px;height:40px}
-.eq-bar{width:3px;background:linear-gradient(180deg,#ff4444,#ff6b6b);border-radius:2px;animation:eqPulse 0.4s ease-in-out infinite;animation-delay:var(--delay)}
+.eq-bar{width:3px;background:linear-gradient(180deg,#ff4444,#ff6b6b);border-radius:2px;height:20%;transition:height 0.06s linear}
 .eq-bar:nth-child(2){background:linear-gradient(180deg,#ff6b6b,#ff8787)}
 .eq-bar:nth-child(3){background:linear-gradient(180deg,#ff8787,#ffa5a5)}
 .eq-bar:nth-child(4){background:linear-gradient(180deg,#ffaa44,#ffcc55)}
@@ -1033,48 +1032,48 @@ body.theme-lava{
 <!-- EQUALIZER VISUALIZATION -->
 <div class="equalizer-container" id="equalizerContainer">
   <div class="equalizer-bars">
-    <div class="eq-bar" style="--delay:0s"></div>
-    <div class="eq-bar" style="--delay:0.05s"></div>
-    <div class="eq-bar" style="--delay:0.1s"></div>
-    <div class="eq-bar" style="--delay:0.15s"></div>
-    <div class="eq-bar" style="--delay:0.2s"></div>
-    <div class="eq-bar" style="--delay:0.25s"></div>
-    <div class="eq-bar" style="--delay:0.3s"></div>
-    <div class="eq-bar" style="--delay:0.35s"></div>
-    <div class="eq-bar" style="--delay:0.4s"></div>
-    <div class="eq-bar" style="--delay:0.45s"></div>
-    <div class="eq-bar" style="--delay:0.5s"></div>
-    <div class="eq-bar" style="--delay:0.55s"></div>
-    <div class="eq-bar" style="--delay:0.6s"></div>
-    <div class="eq-bar" style="--delay:0.65s"></div>
-    <div class="eq-bar" style="--delay:0.7s"></div>
-    <div class="eq-bar" style="--delay:0.75s"></div>
-    <div class="eq-bar" style="--delay:0.8s"></div>
-    <div class="eq-bar" style="--delay:0.85s"></div>
-    <div class="eq-bar" style="--delay:0.9s"></div>
-    <div class="eq-bar" style="--delay:0.95s"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
   </div>
   <div class="equalizer-bars equalizer-reflection">
-    <div class="eq-bar" style="--delay:0s"></div>
-    <div class="eq-bar" style="--delay:0.05s"></div>
-    <div class="eq-bar" style="--delay:0.1s"></div>
-    <div class="eq-bar" style="--delay:0.15s"></div>
-    <div class="eq-bar" style="--delay:0.2s"></div>
-    <div class="eq-bar" style="--delay:0.25s"></div>
-    <div class="eq-bar" style="--delay:0.3s"></div>
-    <div class="eq-bar" style="--delay:0.35s"></div>
-    <div class="eq-bar" style="--delay:0.4s"></div>
-    <div class="eq-bar" style="--delay:0.45s"></div>
-    <div class="eq-bar" style="--delay:0.5s"></div>
-    <div class="eq-bar" style="--delay:0.55s"></div>
-    <div class="eq-bar" style="--delay:0.6s"></div>
-    <div class="eq-bar" style="--delay:0.65s"></div>
-    <div class="eq-bar" style="--delay:0.7s"></div>
-    <div class="eq-bar" style="--delay:0.75s"></div>
-    <div class="eq-bar" style="--delay:0.8s"></div>
-    <div class="eq-bar" style="--delay:0.85s"></div>
-    <div class="eq-bar" style="--delay:0.9s"></div>
-    <div class="eq-bar" style="--delay:0.95s"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
   </div>
 </div>
 
@@ -1388,12 +1387,14 @@ function updPlay(){
     npArt.classList.add('spinning');
     npArt.style.animationPlayState='running';
     if(eq)eq.classList.remove('hidden');
+    startEqBeatSync();
   }else{
     pi.innerHTML='<polygon points="5 3 19 12 5 21 5 3" fill="#000"/>';
     npi.innerHTML='<polygon points="5 3 19 12 5 21 5 3" fill="#fff"/>';
     pCover.style.animationPlayState='paused';
     npArt.style.animationPlayState='paused';
     if(eq)eq.classList.add('hidden');
+    stopEqBeatSync();
   }
 }
 function updVolIcon(){
@@ -1403,6 +1404,49 @@ function updVolIcon(){
   else if(v<50)el.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07"/>';
   else el.innerHTML='<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>';
 }
+
+// ── EQUALIZER BEAT SYNC ──
+let eqAnimId=null;
+const eqBPM=120;
+const eqBarCount=20;
+function startEqBeatSync(){
+  if(eqAnimId)cancelAnimationFrame(eqAnimId);
+  function updateEq(){
+    if(!state.playing||!state.ytReady||!ytP.getCurrentTime){
+      eqAnimId=requestAnimationFrame(updateEq);
+      return;
+    }
+    try{
+      const curTime=ytP.getCurrentTime();
+      const beatDur=(60/eqBPM)*1000;
+      const beatPos=(curTime*1000)%beatDur;
+      const beatPhase=beatPos/beatDur;
+      const bars=document.querySelectorAll('.eq-bar');
+      bars.forEach((bar,i)=>{
+        // Create frequency spectrum: low bass, mid mids, high treble
+        const barPos=(i/eqBarCount)*Math.PI*2;
+        // Combine beat phase with positional variance
+        const wave1=Math.sin(beatPhase*Math.PI*2+barPos)*0.3+0.3;
+        const wave2=Math.cos(beatPhase*Math.PI*2*2+barPos*1.5)*0.2+0.2;
+        const wave3=Math.sin(beatPhase*Math.PI+barPos*0.5)*0.15+0.15;
+        const combinedHeight=(wave1+wave2+wave3)*100;
+        bar.style.height=Math.max(15,Math.min(95,combinedHeight))+'%';
+      });
+    }catch(e){}
+    eqAnimId=requestAnimationFrame(updateEq);
+  }
+  eqAnimId=requestAnimationFrame(updateEq);
+}
+
+function stopEqBeatSync(){
+  if(eqAnimId){
+    cancelAnimationFrame(eqAnimId);
+    eqAnimId=null;
+  }
+  const bars=document.querySelectorAll('.eq-bar');
+  bars.forEach(bar=>bar.style.height='20%');
+}
+
 function updRepeatIcon(btn){
   const svg=btn.querySelector('svg');
   if(!svg)return;
