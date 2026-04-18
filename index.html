@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <title>Flavify</title>
+<meta name="description" content="Your Music, Your Vibe — Filipino music streaming experience"/>
+<meta name="theme-color" content="#e63946"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Flavify"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/icon-192.svg"/>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23e63946' width='100' height='100' rx='20'/><circle cx='30' cy='35' r='8' fill='%23fff' opacity='0.9'/><circle cx='50' cy='28' r='10' fill='%23fff' opacity='0.7'/><circle cx='70' cy='33' r='7' fill='%23fff' opacity='0.8'/><path d='M 20 60 Q 30 45 50 50 T 80 60' stroke='%23fff' stroke-width='4' fill='none' stroke-linecap='round'/><path d='M 25 70 Q 35 55 50 60 T 75 70' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' opacity='0.7'/></svg"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -2031,6 +2038,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
   document.addEventListener('click',()=>document.getElementById('themePicker').classList.remove('open'));
 });
+</script>
+<script>
+// Register Service Worker for PWA
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg=>console.log('SW registered:',reg.scope))
+      .catch(err=>console.log('SW registration failed:',err));
+  });
+}
 </script>
 </body>
 </html>
