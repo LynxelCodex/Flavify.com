@@ -668,53 +668,128 @@ body.theme-lava{
 }
 </style>
 <script>
-// AD BLOCKER
+// AD BLOCKER - More aggressive YouTube ad blocking
 (function() {
-  // Block ad iframes and elements
-  const adSelectors = [
-    'iframe[src*="doubleclick"]',
-    'iframe[src*="googleadservices"]',
-    'iframe[src*="ads.google"]',
-    'div[class*="advert"]',
-    'div[class*="advertisement"]',
-    'div[id*="ad-"]',
-    'div[id*="ads"]',
-    'ins.adsbygoogle',
-    '[data-ad-slot]',
-    '[data-ad-format]',
-    '.ad-banner',
-    '.ad-container'
-  ];
+  // Patch YouTube player config to disable ads
+  window.ytInitialData = window.ytInitialData || {};
+  window.ytInitialPlayerResponse = window.ytInitialPlayerResponse || { adPlacements: [] };
 
+  // Block ad requests at fetch level
+  const originalFetch = window.fetch;
+  window.fetch = function(...args) {
+    const url = typeof args[0] === 'string' ? args[0] : args[0]?.url;
+    
+    // Block YouTube ad endpoints
+    const adPatterns = [
+      /\/get_ad_break/i,
+      /\/get_ads/i,
+      /\/api\/stats\/ads/i,
+      /\/ptracking/i,
+      /\/gen_204/i,
+      /get_watch_next/i,
+      /adPlacements/i,
+      /ads\.youtube\.com/i,
+      /pagead/i,
+      /doubleclick\.net/i
+    ];
+    
+    if (typeof url === 'string' && adPatterns.some(p => p.test(url))) {
+      return Promise.resolve(new Response(JSON.stringify({
+        adPlacements: [],
+        ads: []
+      }), { status: 200 }));
+    }
+    
+    return originalFetch.apply(this, args);
+  };
+
+  // Block XMLHttpRequest to ad URLs
+  const XHROpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function(method, url) {
+    const adPatterns = [
+      /get_ad_break/i, /get_ads/i, /ads\.youtube/i,
+      /doubleclick/i, /pagead/i, /google.*ads/i
+    ];
+    
+    if (typeof url === 'string' && adPatterns.some(p => p.test(url))) {
+      this._blocked = true;
+      return;
+    }
+    
+    return XHROpen.apply(this, arguments);
+  };
+
+  const XHRSend = XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.send = function(...args) {
+    if (this._blocked) return;
+    return XHRSend.apply(this, args);
+  };
+
+  // Remove ad elements
   const removeAds = () => {
+    const adSelectors = [
+      // YouTube player ads
+      '.ytp-ad-overlay-container',
+      '.ytp-ad-progress',
+      '.ytp-ad-player-overlay',
+      '.ytp-ads',
+      '.ytp-ad-preview-container',
+      'ytd-display-ad-renderer',
+      'ytd-video-secondary-info-renderer .ad',
+      // Generic ad selectors
+      '[data-ad-slot]',
+      '[data-ad-format]',
+      'ins.adsbygoogle',
+      '.ad-banner',
+      '.ad-container',
+      'div[class*="ad-overlay"]',
+      'div[class*="advertisement"]'
+    ];
+
     adSelectors.forEach(selector => {
-      document.querySelectorAll(selector).forEach(el => el.remove());
+      try {
+        document.querySelectorAll(selector).forEach(el => {
+          if (el && el.parentNode) el.remove();
+        });
+      } catch (e) {}
     });
   };
 
-  // Remove ads on load
+  // Run on page load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', removeAds);
   } else {
     removeAds();
   }
 
-  // Remove ads added dynamically
+  // Monitor for new ads
   const observer = new MutationObserver(removeAds);
-  observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    characterData: false
+  });
 
-  // Block ad network requests
-  const originalFetch = window.fetch;
-  window.fetch = function(...args) {
-    const url = args[0];
-    const adDomains = [
-      'doubleclick.net', 'googlesyndication.com', 'adservice.google.com',
-      'ads.google.com', 'pagead2.googlesyndication.com', 'moat.com'
-    ];
-    if (typeof url === 'string' && adDomains.some(d => url.includes(d))) {
-      return Promise.resolve(new Response('', { status: 204 }));
+  // Aggressive cleanup interval
+  setInterval(removeAds, 1000);
+
+  // Disable video ads by intercepting player
+  if (window.YT) {
+    const origOnReady = window.YT.Player.prototype.onReady;
+    window.YT.Player.prototype.onReady = function(...args) {
+      this.setAutoplay(false);
+      return origOnReady?.apply(this, args);
+    };
+  }
+
+  // Block addEventListener for ad tracking
+  const origAddEventListener = window.addEventListener;
+  window.addEventListener = function(type, listener, options) {
+    if (type === 'beforeunload' && listener.toString().includes('ad')) {
+      return;
     }
-    return originalFetch.apply(this, args);
+    return origAddEventListener.apply(this, arguments);
   };
 })();
 </script>

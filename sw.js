@@ -25,53 +25,59 @@ self.addEventListener('activate', e => {
   );
 });
 
-// AD BLOCKING — common ad domains to block
+// AD BLOCKING LISTS
 const AD_DOMAINS = [
-  'doubleclick.net',
-  'googlesyndication.com',
-  'adservice.google.com',
-  'pagead2.googlesyndication.com',
-  'ads.google.com',
-  'googleadservices.com',
-  'adsdrive.com',
-  'moat.com',
-  'adsensecustomsearchads.com',
-  'pagead46.googlesyndication.com',
-  'pagead-googlehosted.l.google.com',
-  'analytics.google.com',
-  'googletagmanager.com',
-  'facebook.com/tr',
-  'connect.facebook.net',
-  'platform.twitter.com',
-  'ads.linkedin.com',
-  'bidder.criteo.com',
-  'ib.adnxs.com',
-  'akamaized.net',
-  'pubads.g.doubleclick.net',
-  'securepubads.g.doubleclick.net',
-  'tpc.googlesyndication.com',
-  'www-googletagmanager.l.google.com',
-  'google-analytics.com',
-  'stats.g.doubleclick.net'
+  'doubleclick.net', 'googlesyndication.com', 'adservice.google.com',
+  'pagead2.googlesyndication.com', 'ads.google.com', 'googleadservices.com',
+  'adsdrive.com', 'moat.com', 'analytics.google.com', 'googletagmanager.com',
+  'facebook.com', 'connect.facebook.net', 'platform.twitter.com',
+  'ads.linkedin.com', 'bidder.criteo.com', 'akamaized.net'
 ];
+
+const YOUTUBE_AD_ENDPOINTS = [
+  '/get_ad_break', '/get_ads', '/api/stats/ads', '/api/stats/watchtime',
+  '/youtubei', '/get_watch_next', '/ptracking', '/api/stats/',
+  '/gen_204', '/pagead/', '/vast', '/adserving'
+];
+
+// Check if URL is an ad request
+function isAdRequest(url) {
+  const urlStr = url.toString();
+  
+  // Check domains
+  if (AD_DOMAINS.some(domain => url.hostname.includes(domain))) return true;
+  
+  // Check YouTube ad endpoints
+  if (url.hostname.includes('youtube.com') || url.hostname.includes('googlevideo.com')) {
+    if (YOUTUBE_AD_ENDPOINTS.some(endpoint => urlStr.includes(endpoint))) return true;
+  }
+  
+  // Check for pattern-based ad URLs
+  if (/(ad|tracking|stats)/.test(urlStr) && 
+      (urlStr.includes('google') || urlStr.includes('doubleclick') || urlStr.includes('youtube'))) {
+    return true;
+  }
+  
+  return false;
+}
 
 // Fetch — network-first for API calls, cache-first for app shell
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // BLOCK ADS — return empty response for ad domains
-  if (AD_DOMAINS.some(domain => url.hostname.includes(domain))) {
+  // BLOCK ADS — return empty response for ad requests
+  if (isAdRequest(url)) {
     e.respondWith(new Response('', { status: 204 }));
     return;
   }
 
-  // Skip YouTube API, iframe, and external requests — always go to network
+  // Skip external requests — always go to network
   if (
     url.hostname.includes('youtube.com') ||
     url.hostname.includes('googleapis.com') ||
     url.hostname.includes('googleusercontent.com') ||
-    url.hostname.includes('google.com') ||
     url.hostname.includes('gstatic.com') ||
+    url.hostname.includes('googlevideo.com') ||
     e.request.method !== 'GET'
   ) {
     return;
@@ -82,14 +88,12 @@ self.addEventListener('fetch', e => {
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(response => {
-        // Don't cache non-ok or opaque responses
         if (!response || response.status !== 200) return response;
         const clone = response.clone();
         caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
         return response;
       });
     }).catch(() => {
-      // Fallback for navigation requests
       if (e.request.mode === 'navigate') {
         return caches.match('./index.html');
       }
