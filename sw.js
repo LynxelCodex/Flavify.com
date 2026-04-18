@@ -25,9 +25,45 @@ self.addEventListener('activate', e => {
   );
 });
 
+// AD BLOCKING — common ad domains to block
+const AD_DOMAINS = [
+  'doubleclick.net',
+  'googlesyndication.com',
+  'adservice.google.com',
+  'pagead2.googlesyndication.com',
+  'ads.google.com',
+  'googleadservices.com',
+  'adsdrive.com',
+  'moat.com',
+  'adsensecustomsearchads.com',
+  'pagead46.googlesyndication.com',
+  'pagead-googlehosted.l.google.com',
+  'analytics.google.com',
+  'googletagmanager.com',
+  'facebook.com/tr',
+  'connect.facebook.net',
+  'platform.twitter.com',
+  'ads.linkedin.com',
+  'bidder.criteo.com',
+  'ib.adnxs.com',
+  'akamaized.net',
+  'pubads.g.doubleclick.net',
+  'securepubads.g.doubleclick.net',
+  'tpc.googlesyndication.com',
+  'www-googletagmanager.l.google.com',
+  'google-analytics.com',
+  'stats.g.doubleclick.net'
+];
+
 // Fetch — network-first for API calls, cache-first for app shell
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+
+  // BLOCK ADS — return empty response for ad domains
+  if (AD_DOMAINS.some(domain => url.hostname.includes(domain))) {
+    e.respondWith(new Response('', { status: 204 }));
+    return;
+  }
 
   // Skip YouTube API, iframe, and external requests — always go to network
   if (

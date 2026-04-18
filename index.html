@@ -667,6 +667,57 @@ body.theme-lava{
   .vid-overlay.mini{width:calc(100vw - 16px);right:8px;left:8px}
 }
 </style>
+<script>
+// AD BLOCKER
+(function() {
+  // Block ad iframes and elements
+  const adSelectors = [
+    'iframe[src*="doubleclick"]',
+    'iframe[src*="googleadservices"]',
+    'iframe[src*="ads.google"]',
+    'div[class*="advert"]',
+    'div[class*="advertisement"]',
+    'div[id*="ad-"]',
+    'div[id*="ads"]',
+    'ins.adsbygoogle',
+    '[data-ad-slot]',
+    '[data-ad-format]',
+    '.ad-banner',
+    '.ad-container'
+  ];
+
+  const removeAds = () => {
+    adSelectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => el.remove());
+    });
+  };
+
+  // Remove ads on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', removeAds);
+  } else {
+    removeAds();
+  }
+
+  // Remove ads added dynamically
+  const observer = new MutationObserver(removeAds);
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Block ad network requests
+  const originalFetch = window.fetch;
+  window.fetch = function(...args) {
+    const url = args[0];
+    const adDomains = [
+      'doubleclick.net', 'googlesyndication.com', 'adservice.google.com',
+      'ads.google.com', 'pagead2.googlesyndication.com', 'moat.com'
+    ];
+    if (typeof url === 'string' && adDomains.some(d => url.includes(d))) {
+      return Promise.resolve(new Response('', { status: 204 }));
+    }
+    return originalFetch.apply(this, args);
+  };
+})();
+</script>
 </head>
 <body class="theme-dark">
 
