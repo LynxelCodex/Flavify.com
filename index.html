@@ -4412,7 +4412,7 @@
 
       <div style="animation:fadeInUp .4s ease .4s both">
         <div class="welcome-warn">
-          <div class="welcome-warn-title">⚠️ Notice</div>
+          <div class="welcome-warn-title" style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Notice</div>
           <p>This app is currently <strong>under development</strong> for project purposes. We do not own all rights —
             rights are reserved to the respective owners.</p>
         </div>
@@ -4431,9 +4431,9 @@
           style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 16px;margin-bottom:16px;text-align:left">
           <div
             style="font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px">
-            🐛 Found a bug? Got ideas?</div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="8" y="6" width="8" height="12" rx="4"/><line x1="6" y1="9" x2="8" y2="9"/><line x1="16" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="8" y2="15"/><line x1="16" y1="15" x2="18" y2="15"/><path d="M12 2v4M12 18v4"/></svg> Found a bug? Got ideas?</div>
           <p style="font-size:1.1rem;color:var(--t2);line-height:1.5;margin:0 0 10px">Spot a glitch in the matrix or
-            have a feature wish? Drop us a message — we don't bite! 😄</p>
+            have a feature wish? Drop us a message — we'd love to hear from you!</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <a href="https://www.facebook.com/share/1DcPuBm9Bf/" target="_blank" rel="noopener"
               style="display:inline-flex;align-items:center;gap:5px;background:rgba(66,103,178,.2);border:1px solid rgba(66,103,178,.3);border-radius:20px;padding:5px 14px;font-size:1.1rem;font-weight:600;color:#6d9eeb;text-decoration:none;transition:all .2s;cursor:pointer"
@@ -4459,8 +4459,7 @@
         </div>
       </div>
 
-      <button class="welcome-enter" id="welcomeEnter" style="animation:fadeInUp .4s ease .45s both">✨ Enter Flavify
-        →</button>
+      <button class="welcome-enter" id="welcomeEnter" style="animation:fadeInUp .4s ease .45s both;display:inline-flex;align-items:center;justify-center;gap:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 3l1.9 5.8a2 2 0 001.3 1.3L21 12l-5.8 1.9a2 2 0 00-1.3 1.3L12 21l-1.9-5.8a2 2 0 00-1.3-1.3L3 12l5.8-1.9a2 2 0 001.3-1.3L12 3z"/></svg> Enter Flavify →</button>
     </div>
   </div>
 
@@ -4578,7 +4577,7 @@
             <span class="vid-active-dot"></span>
           </button>
           <div class="theme-wrap" id="themeWrap">
-            <button class="theme-btn" id="themeToggle" title="Change Theme">🎨</button>
+            <button class="theme-btn" id="themeToggle" title="Change Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.71 1.7-1.63 0-.44-.18-.85-.47-1.16-.3-.3-.48-.73-.48-1.21 0-.92.77-1.7 1.7-1.7H17c2.76 0 5-2.24 5-5 0-5.52-4.48-9.7-10-9.7z"/><circle cx="7.5" cy="11.5" r="1.5" fill="currentColor"/><circle cx="11.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="9.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="14.5" r="1.5" fill="currentColor"/></svg></button>
             <div class="theme-picker" id="themePicker">
               <div class="theme-option active" data-theme="theme-dark">
                 <span class="theme-swatch" style="background:#e63946"></span>Dark Red
@@ -4658,7 +4657,7 @@
         <section class="sect">
           <h2 class="sect-title">Recently played</h2>
           <div class="track-grid" id="recentGrid">
-            <p class="empty-state"><span class="empty-state-icon">🎵</span>Nothing played yet…</p>
+            <p class="empty-state"><span class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Nothing played yet…</p>
           </div>
         </section>
       </div>
@@ -4861,15 +4860,16 @@
       </div>
       <!-- Sleep Timer -->
       <div class="sleep-wrap">
-        <button class="sleep-btn" id="sleepBtn" title="Sleep timer">⏱
+        <button class="sleep-btn" id="sleepBtn" title="Sleep timer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <span class="sleep-badge" id="sleepBadge"></span>
         </button>
         <div class="sleep-picker" id="sleepPicker">
           <div class="sleep-picker-title">Sleep timer</div>
-          <div class="sleep-opt" data-mins="15">⏱ 15 min</div>
-          <div class="sleep-opt" data-mins="30">⏱ 30 min</div>
-          <div class="sleep-opt" data-mins="45">⏱ 45 min</div>
-          <div class="sleep-opt" data-mins="60">⏱ 60 min</div>
+          <div class="sleep-opt" data-mins="15"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 15 min</div>
+          <div class="sleep-opt" data-mins="30"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 30 min</div>
+          <div class="sleep-opt" data-mins="45"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 min</div>
+          <div class="sleep-opt" data-mins="60"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 60 min</div>
           <div class="sleep-opt cancel" id="sleepCancel">✕ Cancel</div>
         </div>
       </div>
@@ -4904,12 +4904,12 @@
 
     <!-- Mobile Quick Tools Bar -->
     <div class="np-top-tools">
-      <button class="np-tool-btn" id="npSpeedBtn" title="Playback speed">⚡ <span id="npSpeedVal">1×</span></button>
-      <button class="np-tool-btn" id="npSleepBtn" title="Sleep timer">⏱ <span id="npSleepVal">Timer</span></button>
-      <button class="np-tool-btn" id="npEqBtn" title="Equalizer">🎚 Equalizer</button>
-      <button class="np-tool-btn" id="npQueueBtn" title="Up Next Queue">≡ Queue</button>
-      <button class="np-tool-btn" id="npLyricsBtn" title="Lyrics">🎤 Lyrics</button>
-      <button class="np-tool-btn" id="npLikeBtn" title="Like track">♥ Like</button>
+      <button class="np-tool-btn" id="npSpeedBtn" title="Playback speed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <span id="npSpeedVal">1×</span></button>
+      <button class="np-tool-btn" id="npSleepBtn" title="Sleep timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <span id="npSleepVal">Timer</span></button>
+      <button class="np-tool-btn" id="npEqBtn" title="Equalizer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg> Equalizer</button>
+      <button class="np-tool-btn" id="npQueueBtn" title="Up Next Queue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Queue</button>
+      <button class="np-tool-btn" id="npLyricsBtn" title="Lyrics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Lyrics</button>
+      <button class="np-tool-btn" id="npLikeBtn" title="Like track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Like</button>
     </div>
 
     <div class="np-art"><img id="npArt" src="" alt="art" /></div>
@@ -5156,7 +5156,7 @@
   </div>
 
   <script>
-    const YT_KEY = 'AIzaSyCwciHt_mhdeGVeF4DYHKxYQAJ2a24uFTc';
+    let YT_KEY = localStorage.getItem('spopyfly_yt_key') || '';
     const SONGS_KEY = 'spopyfly_songs_v3';
     const VER_KEY = 'spopyfly_ver';
     const VER = 'v3';
@@ -5584,7 +5584,7 @@
     }
     function renderRecent() {
       const g = document.getElementById('recentGrid'); g.innerHTML = '';
-      if (!state.recent.length) { g.innerHTML = '<p class="empty-state"><span class="empty-state-icon">🎵</span>Nothing played yet…</p>'; return }
+      if (!state.recent.length) { g.innerHTML = '<p class="empty-state"><span class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Nothing played yet…</p>'; return }
       state.recent.forEach(i => g.appendChild(createCard(songs[i], i)));
       addStagger(g);
     }
@@ -5619,14 +5619,21 @@
       document.getElementById('artistPlayBtn').onclick = () => { if (a.idxs.length) loadTrack(a.idxs[0]) };
       showView('artist');
     }
-    const CATS = [{ l: 'OPM', bg: '#8b2252', e: '🎤' }, { l: 'Hip-Hop', bg: '#7a3a00', e: '🎧' }, { l: 'R&B', bg: '#1a3a7a', e: '🎵' }, { l: 'Pop', bg: '#2a6a2a', e: '🎸' }, { l: 'Ballad', bg: '#4a2a8a', e: '💫' }, { l: 'Electronic', bg: '#0a5a5a', e: '🎛️' }];
+    const CATS = [
+      { l: 'OPM', bg: '#8b2252', e: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>` },
+      { l: 'Hip-Hop', bg: '#7a3a00', e: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>` },
+      { l: 'R&B', bg: '#1a3a7a', e: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>` },
+      { l: 'Pop', bg: '#2a6a2a', e: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>` },
+      { l: 'Ballad', bg: '#4a2a8a', e: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>` },
+      { l: 'Electronic', bg: '#0a5a5a', e: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>` }
+    ];
     function renderCats() {
       const g = document.getElementById('catGrid'); g.innerHTML = '';
       CATS.forEach(c => { const d = document.createElement('div'); d.className = 'cat-card'; d.style.background = c.bg; d.innerHTML = `${esc(c.l)}<span class="cat-emoji">${c.e}</span>`; d.onclick = () => { document.getElementById('searchInput').value = c.l; showView('search'); renderSearch(c.l) }; g.appendChild(d) });
     }
     function renderLibrary() {
       const g = document.getElementById('libraryList'); g.innerHTML = '';
-      if (!songs.length) { g.innerHTML = '<p class="empty-state"><span class="empty-state-icon">📚</span>Your library is empty.</p>'; return }
+      if (!songs.length) { g.innerHTML = '<p class="empty-state"><span class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>Your library is empty.</p>'; return }
       songs.forEach((s, i) => {
         const d = document.createElement('div'); d.className = 'lib-item';
         d.innerHTML = `<div class="lib-item-img"><img src="${esc(s.cover)}" alt="" loading="lazy"/></div><div><p class="lib-item-title">${esc(s.title)}</p><p class="lib-item-sub">Song · ${esc(s.artist)}</p></div>`;
@@ -5659,12 +5666,12 @@
       if (YT_KEY) {
         info.innerHTML = `<span class="spinner"></span>Searching YouTube for "${esc(q)}"…`;
         searchYT(q).then(res => {
-          if (!res.length) { info.innerHTML = '<span class="empty-state-icon" style="font-size:2rem;display:block;text-align:center;margin:12px 0;opacity:.4">🔍</span><span style="display:block;text-align:center;color:var(--t3)">No results found.</span>'; return }
+          if (!res.length) { info.innerHTML = '<span class="empty-state-icon" style="display:flex;justify-content:center;margin:12px 0;opacity:.4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><span style="display:block;text-align:center;color:var(--t3)">No results found.</span>'; return }
           info.innerHTML = `<span class="yt-badge">YouTube</span> ${res.length} results — click + to add to library`;
           res.forEach((s, i) => { const card = createCard(s, i, true); card.style.borderLeft = '2px solid var(--accent)'; grid.appendChild(card) });
           addStagger(grid);
         });
-      } else { info.innerHTML = '<span class="empty-state-icon" style="font-size:2rem;display:block;text-align:center;margin:12px 0;opacity:.4">🔍</span><span style="display:block;text-align:center;color:var(--t3)">No local results found.</span>' }
+      } else { info.innerHTML = '<span class="empty-state-icon" style="display:flex;justify-content:center;margin:12px 0;opacity:.4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><span style="display:block;text-align:center;color:var(--t3)">No local results found.<br/><span style="font-size:1.15rem;color:var(--t2)">Tip: Paste any YouTube video URL or ID directly into search to stream it!</span></span>' }
     }
     async function searchYT(q) {
       try {
@@ -5978,7 +5985,7 @@
         const list = document.getElementById('likedList');
         list.innerHTML = '';
         const likedSongs = [...state.liked].map(i => ({ s: songs[i], i }));
-        if (!likedSongs.length) { list.innerHTML = '<p class="empty-state"><span class="empty-state-icon">♥</span>No liked songs yet. Hit ♥ while playing!</p>'; return }
+        if (!likedSongs.length) { list.innerHTML = '<p class="empty-state"><span class="empty-state-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="24" height="24" style="color:var(--accent)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>No liked songs yet. Tap the heart while playing!</p>'; return }
         likedSongs.forEach(({ s, i }) => {
           const d = document.createElement('div'); d.className = 'lib-item';
           d.innerHTML = `<div class="lib-item-img"><img src="${esc(s.cover)}" alt=""/></div><div><p class="lib-item-title">${esc(s.title)}</p><p class="lib-item-sub">Song · ${esc(s.artist)}</p></div>`;
@@ -6232,11 +6239,36 @@
       // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       // TOAST NOTIFICATION SYSTEM
       // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      function getToastIconSvg(icon) {
+        if (!icon) return '';
+        if (icon.includes('<svg')) return `<span class="toast-icon">${icon}</span>`;
+        const iconMap = {
+          '⚡': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+          '⏱': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+          '😴': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+          '💤': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+          '♥': `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="16" height="16" style="color:var(--accent)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+          '♡': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+          '🔊': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`,
+          '🔇': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="1" y1="1" x2="23" y2="23"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>`,
+          '🔀': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>`,
+          '⏳': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`,
+          '✅': `<svg viewBox="0 0 24 24" fill="none" stroke="#52b788" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>`,
+          '➕': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+          '🔗': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+          '⚠️': `<svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+          '✕': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+          '✨': `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" width="16" height="16"><path d="M12 3l1.9 5.8a2 2 0 001.3 1.3L21 12l-5.8 1.9a2 2 0 00-1.3 1.3L12 21l-1.9-5.8a2 2 0 00-1.3-1.3L3 12l5.8-1.9a2 2 0 001.3-1.3L12 3z"/></svg>`
+        };
+        const svgContent = iconMap[icon] || `<span style="font-size:1.4rem">${icon}</span>`;
+        return `<span class="toast-icon">${svgContent}</span>`;
+      }
+
       function showToast(message, icon = '', duration = 2800) {
         const container = document.getElementById('toastContainer');
         const t = document.createElement('div');
         t.className = 'toast';
-        t.innerHTML = (icon ? `<span class="toast-icon">${icon}</span>` : '') + `<span>${message}</span>`;
+        t.innerHTML = getToastIconSvg(icon) + `<span>${message}</span>`;
         container.appendChild(t);
         setTimeout(() => {
           t.classList.add('out');
@@ -6255,7 +6287,7 @@
         const qBtn = document.getElementById('queueToggleBtn');
         list.innerHTML = '';
         if (state.idx === -1) {
-          list.innerHTML = '<p class="empty-state" style="padding:24px 16px"><span class="empty-state-icon">🎵</span>No track playing</p>';
+          list.innerHTML = '<p class="empty-state" style="padding:24px 16px"><span class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>No track playing</p>';
           if (nowImg) nowImg.src = '';
           if (nowTitle) nowTitle.textContent = '—';
           if (nowArtist) nowArtist.textContent = '—';
@@ -6283,7 +6315,7 @@
         }
 
         if (!upcoming.length) {
-          list.innerHTML = '<p class="empty-state" style="padding:16px"><span class="empty-state-icon">🔚</span>End of queue</p>';
+          list.innerHTML = '<p class="empty-state" style="padding:16px"><span class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><polyline points="20 6 9 17 4 12"/></svg></span>End of queue</p>';
         }
         upcoming.forEach((si, pos) => {
           const s = songs[si];
@@ -6849,7 +6881,7 @@
   <!-- KEYBOARD SHORTCUTS MODAL -->
   <div class="kb-overlay" id="kbOverlay">
     <div class="kb-box">
-      <div class="kb-title">⌨️ Keyboard Shortcuts</div>
+      <div class="kb-title" style="display:flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="6" y1="8" x2="6.01" y2="8"/><line x1="10" y1="8" x2="10.01" y2="8"/><line x1="14" y1="8" x2="14.01" y2="8"/><line x1="18" y1="8" x2="18.01" y2="8"/><line x1="8" y1="16" x2="16" y2="16"/></svg> Keyboard Shortcuts</div>
       <div class="kb-sub">Control Flavify without touching the mouse</div>
       <div class="kb-grid">
         <div class="kb-row"><span class="kb-action">Play / Pause</span><div class="kb-keys"><span class="kb-key">Space</span></div></div>
@@ -6895,20 +6927,20 @@
       <div class="welcome-card-sub">Discover and stream the best music all in one place</div>
       
       <div class="welcome-notice-box">
-        <div class="welcome-notice-header">⚠️ Notice</div>
+        <div class="welcome-notice-header" style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Notice</div>
         <div class="welcome-notice-body">
           This app is currently <strong>under development</strong> for project purposes. We do not own all rights — rights are reserved to the respective owners.
         </div>
       </div>
 
       <div class="welcome-powered">
-        Powered by <span class="welcome-powered-yt">🔴 YouTube</span>
+        Powered by <span class="welcome-powered-yt" style="display:inline-flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" fill="#ff0000" width="14" height="14"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8z"/><polygon points="9.7 15.5 15.8 12 9.7 8.5 9.7 15.5" fill="#fff"/></svg> YouTube</span>
       </div>
 
       <div class="welcome-feedback-box">
-        <div class="welcome-feedback-header">🐍 Found a bug? Got ideas?</div>
+        <div class="welcome-feedback-header" style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="8" y="6" width="8" height="12" rx="4"/><line x1="6" y1="9" x2="8" y2="9"/><line x1="16" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="8" y2="15"/><line x1="16" y1="15" x2="18" y2="15"/><path d="M12 2v4M12 18v4"/></svg> Found a bug? Got ideas?</div>
         <div class="welcome-feedback-body">
-          Spot a glitch in the matrix or have a feature wish? Drop us a message — we don't bite! 😄
+          Spot a glitch in the matrix or have a feature wish? Drop us a message — we'd love to hear from you!
         </div>
         <div class="welcome-feedback-btns">
           <a href="https://facebook.com" target="_blank" rel="noopener" class="welcome-social-btn fb">
@@ -6922,7 +6954,7 @@
         </div>
       </div>
 
-      <button class="welcome-enter-btn" id="welcomeEnterBtn">✨ Enter Flavify →</button>
+      <button class="welcome-enter-btn" id="welcomeEnterBtn" style="display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 3l1.9 5.8a2 2 0 001.3 1.3L21 12l-5.8 1.9a2 2 0 00-1.3 1.3L12 21l-1.9-5.8a2 2 0 00-1.3-1.3L3 12l5.8-1.9a2 2 0 001.3-1.3L12 3z"/></svg> Enter Flavify →</button>
     </div>
   </div>
 
