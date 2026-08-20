@@ -3822,6 +3822,233 @@
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MOBILE ACCESSIBILITY & ACTION SHEETS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .mob-more-btn {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .1);
+      color: var(--t1);
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--tr);
+    }
+
+    .mob-more-btn:active {
+      background: rgba(255, 255, 255, .25);
+    }
+
+    @media(max-width:768px) {
+      .mob-more-btn {
+        display: flex;
+      }
+    }
+
+    /* NP PANEL TOP TOOLBAR & VOLUME */
+    .np-top-tools {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 92%;
+      max-width: 440px;
+      margin-top: 6px;
+    }
+
+    .np-tool-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 20px;
+      padding: 6px 13px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--t1);
+      cursor: pointer;
+      transition: all var(--tr);
+    }
+
+    .np-tool-btn:hover,
+    .np-tool-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .np-tool-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .np-vol-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 90%;
+      max-width: 440px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, .06);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, .1);
+      margin-top: 6px;
+    }
+
+    .np-vol-row svg {
+      color: var(--t2);
+      flex-shrink: 0;
+    }
+
+    .np-vol-slider {
+      flex: 1;
+      accent-color: var(--accent);
+      height: 4px;
+      cursor: pointer;
+    }
+
+    /* UNIVERSAL MOBILE ACTION SHEETS */
+    .mob-sheet-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 9600;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .28s ease, visibility .28s ease;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .mob-sheet-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mob-sheet {
+      background: rgba(18, 18, 32, .96);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 24px 24px 0 0;
+      width: 100%;
+      max-width: 520px;
+      padding: 22px 20px;
+      box-shadow: 0 -12px 48px rgba(0, 0, 0, .7);
+      transform: translateY(100%);
+      transition: transform .32s cubic-bezier(.4, 0, .2, 1);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .mob-sheet-overlay.open .mob-sheet {
+      transform: translateY(0);
+    }
+
+    .mob-sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: rgba(255, 255, 255, .25);
+      border-radius: 2px;
+      margin: 0 auto 16px;
+    }
+
+    .mob-sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .mob-sheet-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--t1);
+    }
+
+    .mob-sheet-sub {
+      font-size: 1.2rem;
+      color: var(--t2);
+      margin-top: 2px;
+    }
+
+    .mob-sheet-close {
+      background: rgba(255, 255, 255, .1);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--t2);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .mob-sheet-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mob-sheet-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .05);
+      color: var(--t1);
+      font-size: 1.35rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--tr), transform .15s ease;
+    }
+
+    .mob-sheet-item:active {
+      background: rgba(255, 255, 255, .14);
+      transform: scale(0.99);
+    }
+
+    .mob-sheet-item svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* TRACK MOBILE 3-DOT BUTTON */
+    .track-mob-opt {
+      display: none;
+      width: 32px;
+      height: 32px;
+      align-items: center;
+      justify-content: center;
+      color: var(--t2);
+      font-size: 1.6rem;
+      border-radius: 50%;
+      cursor: pointer;
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    @media(max-width:768px) {
+      .track-mob-opt {
+        display: flex;
+      }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    WELCOME MODAL (USER SCREENSHOT)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .welcome-overlay {
@@ -4597,6 +4824,7 @@
             <polyline points="7 23 3 19 7 15" />
             <path d="M21 13v2a4 4 0 01-4 4H3" />
           </svg></button>
+        <button class="mob-more-btn" id="btnMobMore" title="More options">···</button>
       </div>
       <div class="prog-row">
         <span class="time" id="timeCurr">0:00</span>
@@ -4673,11 +4901,32 @@
     <button class="np-close" id="npClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="18 15 12 9 6 15" />
       </svg></button>
+
+    <!-- Mobile Quick Tools Bar -->
+    <div class="np-top-tools">
+      <button class="np-tool-btn" id="npSpeedBtn" title="Playback speed">⚡ <span id="npSpeedVal">1×</span></button>
+      <button class="np-tool-btn" id="npSleepBtn" title="Sleep timer">⏱ <span id="npSleepVal">Timer</span></button>
+      <button class="np-tool-btn" id="npEqBtn" title="Equalizer">🎚 Equalizer</button>
+      <button class="np-tool-btn" id="npQueueBtn" title="Up Next Queue">≡ Queue</button>
+      <button class="np-tool-btn" id="npLyricsBtn" title="Lyrics">🎤 Lyrics</button>
+      <button class="np-tool-btn" id="npLikeBtn" title="Like track">♥ Like</button>
+    </div>
+
     <div class="np-art"><img id="npArt" src="" alt="art" /></div>
     <div class="np-info">
       <span class="np-title" id="npTitle">—</span>
       <span class="np-artist" id="npArtist">—</span>
     </div>
+
+    <!-- Mobile Volume Row -->
+    <div class="np-vol-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" />
+      </svg>
+      <input type="range" id="npVolSlider" class="np-vol-slider" min="0" max="100" value="70" />
+    </div>
+
     <div class="np-ctrl">
       <div class="np-prog-row">
         <span class="time" id="npTimeCurr">0:00</span>
@@ -4796,7 +5045,115 @@
     <button class="mob-nav-btn" data-view="library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
         <path d="M3 3h4v18H3zM10 3h4v18h-4zM21 3l-4 18" />
       </svg><span>Library</span></button>
+    <button class="mob-nav-btn" id="mobToolsTab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+      </svg><span>Tools</span></button>
   </nav>
+
+  <!-- MOBILE PLAYER QUICK OPTIONS SHEET -->
+  <div class="mob-sheet-overlay" id="mobMoreMenu">
+    <div class="mob-sheet">
+      <div class="mob-sheet-handle"></div>
+      <div class="mob-sheet-header">
+        <div>
+          <div class="mob-sheet-title">Player Controls</div>
+          <div class="mob-sheet-sub">Quick audio & playback options</div>
+        </div>
+        <button class="mob-sheet-close" id="closeMobMoreMenu">✕</button>
+      </div>
+      <div class="mob-sheet-grid">
+        <div class="mob-sheet-item" id="sheetOptEq">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          <span>Equalizer & Presets</span>
+        </div>
+        <div class="mob-sheet-item" id="sheetOptSpeed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Playback Speed (<span id="sheetSpeedVal">1×</span>)</span>
+        </div>
+        <div class="mob-sheet-item" id="sheetOptSleep">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Sleep Timer (<span id="sheetSleepVal">Off</span>)</span>
+        </div>
+        <div class="mob-sheet-item" id="sheetOptQueue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <span>Up Next Queue</span>
+        </div>
+        <div class="mob-sheet-item" id="sheetOptLyrics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <span>Synchronized Lyrics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIVERSAL TRACK ACTION SHEET -->
+  <div class="mob-sheet-overlay" id="mobTrackActionSheet">
+    <div class="mob-sheet">
+      <div class="mob-sheet-handle"></div>
+      <div class="mob-sheet-header">
+        <div>
+          <div class="mob-sheet-title" id="trackSheetTitle">Track Options</div>
+          <div class="mob-sheet-sub" id="trackSheetArtist">Artist Name</div>
+        </div>
+        <button class="mob-sheet-close" id="closeTrackActionSheet">✕</button>
+      </div>
+      <div class="mob-sheet-grid">
+        <div class="mob-sheet-item" id="tsPlayNow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Play Now</span>
+        </div>
+        <div class="mob-sheet-item" id="tsAddQueue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Add to Queue</span>
+        </div>
+        <div class="mob-sheet-item" id="tsAddPlaylist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span>Save to Library</span>
+        </div>
+        <div class="mob-sheet-item" id="tsViewLyrics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <span>View Lyrics</span>
+        </div>
+        <div class="mob-sheet-item" id="tsShare">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <span>Share Song</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK TOOLS SHEET -->
+  <div class="mob-sheet-overlay" id="mobToolsSheet">
+    <div class="mob-sheet">
+      <div class="mob-sheet-handle"></div>
+      <div class="mob-sheet-header">
+        <div>
+          <div class="mob-sheet-title">Quick Tools Hub</div>
+          <div class="mob-sheet-sub">Access all app utilities</div>
+        </div>
+        <button class="mob-sheet-close" id="closeMobToolsSheet">✕</button>
+      </div>
+      <div class="mob-sheet-grid">
+        <div class="mob-sheet-item" id="toolsEq">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          <span>Audio Equalizer</span>
+        </div>
+        <div class="mob-sheet-item" id="toolsShortcuts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="6" y1="8" x2="6.01" y2="8"/><line x1="10" y1="8" x2="10.01" y2="8"/><line x1="14" y1="8" x2="14.01" y2="8"/><line x1="18" y1="8" x2="18.01" y2="8"/><line x1="8" y1="16" x2="16" y2="16"/></svg>
+          <span>App & Shortcut Guide</span>
+        </div>
+        <div class="mob-sheet-item" id="toolsSidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <span>Toggle Navigation Menu</span>
+        </div>
+        <div class="mob-sheet-item" id="toolsWelcome">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>Show Welcome Screen</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     const YT_KEY = 'AIzaSyCwciHt_mhdeGVeF4DYHKxYQAJ2a24uFTc';
@@ -5114,7 +5471,16 @@
       const playOrAdd = addMode
         ? `<button class="tc-play" onclick="event.stopPropagation();addAndPlay({title:'${esc(s.title)}',artist:'${esc(s.artist)}',cover:'${s.cover}',vid:'${s.vid}'})" title="Add & play"><svg viewBox="0 0 24 24" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19" stroke="#fff" stroke-width="2.5"/><line x1="5" y1="12" x2="19" y2="12" stroke="#fff" stroke-width="2.5"/></svg></button>`
         : `<button class="tc-play" onclick="event.stopPropagation();${i === state.idx ? 'playPause()' : 'loadTrack(' + i + ')'}" title="Play"><svg viewBox="0 0 24 24" width="18" height="18"><polygon points="5 3 19 12 5 21 5 3" fill="#fff"/></svg></button>`;
-      d.innerHTML = `<div class="tc-cover"><img src="${esc(s.cover)}" alt="" loading="lazy"/>${playOrAdd}<span class="tc-now">Playing</span></div><p class="tc-title">${esc(s.title)}</p><p class="tc-artist"><span class="eq"><span class="eq-b"></span><span class="eq-b"></span><span class="eq-b"></span><span class="eq-b"></span></span>${esc(s.artist)}</p>`;
+      const mobOptBtn = `<div class="track-mob-opt" onclick="event.stopPropagation();openTrackActionSheet(${i})" title="Options">⋮</div>`;
+      d.innerHTML = `<div class="tc-cover"><img src="${esc(s.cover)}" alt="" loading="lazy"/>${playOrAdd}<span class="tc-now">Playing</span></div><div style="display:flex;align-items:center;justify-content:space-between;width:100%"><div style="min-width:0;flex:1"><p class="tc-title">${esc(s.title)}</p><p class="tc-artist"><span class="eq"><span class="eq-b"></span><span class="eq-b"></span><span class="eq-b"></span><span class="eq-b"></span></span>${esc(s.artist)}</p></div>${mobOptBtn}</div>`;
+      
+      let touchTimer = null;
+      d.addEventListener('touchstart', () => {
+        touchTimer = setTimeout(() => { openTrackActionSheet(i); }, 500);
+      }, { passive: true });
+      d.addEventListener('touchend', () => clearTimeout(touchTimer));
+      d.addEventListener('touchmove', () => clearTimeout(touchTimer));
+
       if (!addMode) d.onclick = () => state.idx === i ? playPause() : loadTrack(i);
       return d;
     }
@@ -6181,6 +6547,216 @@
           showToast('Track added from URL', '✅');
         }
       });
+
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      // MOBILE ACCESSIBILITY & TOUCH HANDLERS
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      let selectedTrackIdxForSheet = -1;
+
+      window.openTrackActionSheet = function(idx) {
+        selectedTrackIdxForSheet = idx;
+        const s = songs[idx];
+        if (!s) return;
+        document.getElementById('trackSheetTitle').textContent = s.title;
+        document.getElementById('trackSheetArtist').textContent = s.artist;
+        document.getElementById('mobTrackActionSheet').classList.add('open');
+      };
+
+      function closeTrackActionSheet() {
+        document.getElementById('mobTrackActionSheet').classList.remove('open');
+      }
+
+      document.getElementById('closeTrackActionSheet')?.addEventListener('click', closeTrackActionSheet);
+      document.getElementById('mobTrackActionSheet')?.addEventListener('click', (e) => {
+        if (e.target.classList.contains('mob-sheet-overlay')) closeTrackActionSheet();
+      });
+
+      document.getElementById('tsPlayNow')?.addEventListener('click', () => {
+        if (selectedTrackIdxForSheet >= 0) loadTrack(selectedTrackIdxForSheet);
+        closeTrackActionSheet();
+      });
+      document.getElementById('tsAddQueue')?.addEventListener('click', () => {
+        if (selectedTrackIdxForSheet >= 0) {
+          renderQueue();
+          showToast(`Added "${songs[selectedTrackIdxForSheet].title}" to Queue`, '➕');
+        }
+        closeTrackActionSheet();
+      });
+      document.getElementById('tsAddPlaylist')?.addEventListener('click', () => {
+        if (selectedTrackIdxForSheet >= 0) {
+          state.liked.add(selectedTrackIdxForSheet);
+          updLike();
+          showToast('Added to Liked Songs', '♥');
+        }
+        closeTrackActionSheet();
+      });
+      document.getElementById('tsViewLyrics')?.addEventListener('click', () => {
+        if (selectedTrackIdxForSheet >= 0 && selectedTrackIdxForSheet !== state.idx) {
+          loadTrack(selectedTrackIdxForSheet);
+        }
+        showView('lyrics');
+        closeTrackActionSheet();
+      });
+      document.getElementById('tsShare')?.addEventListener('click', () => {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(window.location.href);
+          showToast('Link copied to clipboard', '🔗');
+        } else {
+          showToast('Sharing not supported on this browser', '⚠️');
+        }
+        closeTrackActionSheet();
+      });
+
+      // MINI-PLAYER MORE OPTIONS MENU
+      const mobMoreMenu = document.getElementById('mobMoreMenu');
+      const btnMobMore = document.getElementById('btnMobMore');
+      const closeMobMoreMenu = document.getElementById('closeMobMoreMenu');
+
+      btnMobMore?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('sheetSpeedVal').textContent = currentSpeed + '×';
+        document.getElementById('sheetSleepVal').textContent = sleepRemainingMs > 0 ? Math.ceil(sleepRemainingMs / 60000) + 'm' : 'Off';
+        mobMoreMenu.classList.add('open');
+      });
+
+      closeMobMoreMenu?.addEventListener('click', () => mobMoreMenu.classList.remove('open'));
+      mobMoreMenu?.addEventListener('click', (e) => {
+        if (e.target.classList.contains('mob-sheet-overlay')) mobMoreMenu.classList.remove('open');
+      });
+
+      document.getElementById('sheetOptEq')?.addEventListener('click', () => {
+        mobMoreMenu.classList.remove('open');
+        document.getElementById('eqOverlay')?.classList.add('open');
+      });
+      document.getElementById('sheetOptSpeed')?.addEventListener('click', () => {
+        mobMoreMenu.classList.remove('open');
+        document.getElementById('speedBtn')?.click();
+      });
+      document.getElementById('sheetOptSleep')?.addEventListener('click', () => {
+        mobMoreMenu.classList.remove('open');
+        document.getElementById('sleepBtn')?.click();
+      });
+      document.getElementById('sheetOptQueue')?.addEventListener('click', () => {
+        mobMoreMenu.classList.remove('open');
+        document.getElementById('queueToggleBtn')?.click();
+      });
+      document.getElementById('sheetOptLyrics')?.addEventListener('click', () => {
+        mobMoreMenu.classList.remove('open');
+        showView('lyrics');
+      });
+
+      // MOBILE QUICK TOOLS HUB
+      const mobToolsSheet = document.getElementById('mobToolsSheet');
+      const mobToolsTab = document.getElementById('mobToolsTab');
+      const closeMobToolsSheet = document.getElementById('closeMobToolsSheet');
+
+      mobToolsTab?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mobToolsSheet.classList.add('open');
+      });
+      closeMobToolsSheet?.addEventListener('click', () => mobToolsSheet.classList.remove('open'));
+      mobToolsSheet?.addEventListener('click', (e) => {
+        if (e.target.classList.contains('mob-sheet-overlay')) mobToolsSheet.classList.remove('open');
+      });
+
+      document.getElementById('toolsEq')?.addEventListener('click', () => {
+        mobToolsSheet.classList.remove('open');
+        document.getElementById('eqOverlay')?.classList.add('open');
+      });
+      document.getElementById('toolsShortcuts')?.addEventListener('click', () => {
+        mobToolsSheet.classList.remove('open');
+        document.getElementById('kbOverlay')?.classList.add('open');
+      });
+      document.getElementById('toolsSidebar')?.addEventListener('click', () => {
+        mobToolsSheet.classList.remove('open');
+        document.querySelector('.sidebar')?.classList.toggle('open');
+      });
+      document.getElementById('toolsWelcome')?.addEventListener('click', () => {
+        mobToolsSheet.classList.remove('open');
+        document.getElementById('welcomeModalOverlay')?.classList.add('show');
+      });
+
+      // NP PANEL TOOLBAR HANDLERS
+      document.getElementById('npSpeedBtn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+        let nextIdx = (speeds.indexOf(currentSpeed) + 1) % speeds.length;
+        const rate = speeds[nextIdx];
+        currentSpeed = rate;
+        if (state.ytReady && ytP) ytP.setPlaybackRate(rate);
+        document.getElementById('npSpeedVal').textContent = rate + '×';
+        document.getElementById('speedBtn').textContent = rate === 1 ? '1×' : rate + '×';
+        document.getElementById('npSpeedBtn').classList.toggle('active', rate !== 1);
+        showToast(`Speed set to ${rate}×`, '⚡');
+      });
+
+      document.getElementById('npSleepBtn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('sleepBtn')?.click();
+      });
+      document.getElementById('npEqBtn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('eqOverlay')?.classList.add('open');
+      });
+      document.getElementById('npQueueBtn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('queueToggleBtn')?.click();
+      });
+      document.getElementById('npLyricsBtn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showView('lyrics');
+        document.getElementById('npPanel')?.classList.remove('open');
+      });
+      document.getElementById('npLikeBtn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (state.idx === -1) return;
+        const wasLiked = state.liked.has(state.idx);
+        wasLiked ? state.liked.delete(state.idx) : state.liked.add(state.idx);
+        updLike();
+        document.getElementById('npLikeBtn').classList.toggle('active', !wasLiked);
+        showToast(!wasLiked ? 'Added to liked songs' : 'Removed from liked songs', !wasLiked ? '♥' : '♡');
+      });
+
+      // MOBILE VOLUME SLIDER SYNC
+      const npVolSlider = document.getElementById('npVolSlider');
+      if (npVolSlider) {
+        npVolSlider.addEventListener('input', (e) => {
+          const val = parseInt(e.target.value);
+          setVol(val);
+          const desktopSlider = document.getElementById('volSlider');
+          if (desktopSlider) desktopSlider.value = val;
+        });
+      }
+
+      // TOUCH SWIPE GESTURES
+      let touchStartX = 0;
+      let touchStartY = 0;
+      const playerEl = document.querySelector('.player');
+      if (playerEl) {
+        playerEl.addEventListener('touchstart', (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        playerEl.addEventListener('touchend', (e) => {
+          const deltaX = e.changedTouches[0].clientX - touchStartX;
+          const deltaY = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(deltaX) > 60 && Math.abs(deltaY) < 40) {
+            if (deltaX < 0) nextTrack();
+            else prevTrack();
+          }
+        }, { passive: true });
+      }
+
+      const npPanelEl = document.getElementById('npPanel');
+      if (npPanelEl) {
+        npPanelEl.addEventListener('touchstart', (e) => {
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        npPanelEl.addEventListener('touchend', (e) => {
+          const deltaY = e.changedTouches[0].clientY - touchStartY;
+          if (deltaY > 90) npPanelEl.classList.remove('open');
+        }, { passive: true });
+      }
 
       // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       // APP LOADING SCREEN & WELCOME MODAL
