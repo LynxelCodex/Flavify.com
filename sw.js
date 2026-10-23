@@ -1,10 +1,10 @@
-const CACHE_NAME = 'flavify-v1';
+const CACHE_NAME = 'flavify-v2';
 const SHELL_ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/icon-192.svg',
+  './icons/icon-512.svg'
 ];
 
 // Install — cache app shell
@@ -43,21 +43,18 @@ const YOUTUBE_AD_ENDPOINTS = [
 // Check if URL is an ad request
 function isAdRequest(url) {
   const urlStr = url.toString();
-  
-  // Check domains
-  if (AD_DOMAINS.some(domain => url.hostname.includes(domain))) return true;
-  
-  // Check YouTube ad endpoints
-  if (url.hostname.includes('youtube.com') || url.hostname.includes('googlevideo.com')) {
-    if (YOUTUBE_AD_ENDPOINTS.some(endpoint => urlStr.includes(endpoint))) return true;
+  const host = url.hostname;
+
+  // Check domains — exact host or a real subdomain, never a name that merely
+  // contains the word (searching "adore" must not be treated as an ad).
+  if (AD_DOMAINS.some(domain => host === domain || host.endsWith('.' + domain))) return true;
+
+  // Check YouTube ad endpoints (path only, so query text is ignored)
+  if (host === 'youtube.com' || host.endsWith('.youtube.com') || host === 'googlevideo.com' || host.endsWith('.googlevideo.com')) {
+    const path = url.pathname;
+    if (YOUTUBE_AD_ENDPOINTS.some(endpoint => path.startsWith(endpoint))) return true;
   }
-  
-  // Check for pattern-based ad URLs
-  if (/(ad|tracking|stats)/.test(urlStr) && 
-      (urlStr.includes('google') || urlStr.includes('doubleclick') || urlStr.includes('youtube'))) {
-    return true;
-  }
-  
+
   return false;
 }
 
@@ -71,13 +68,17 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Skip external requests — always go to network
+  // Never cache or intercept search/metadata calls, and skip external hosts
   if (
     url.hostname.includes('youtube.com') ||
     url.hostname.includes('googleapis.com') ||
     url.hostname.includes('googleusercontent.com') ||
     url.hostname.includes('gstatic.com') ||
     url.hostname.includes('googlevideo.com') ||
+    url.hostname.includes('ytimg.com') ||
+    url.hostname.includes('ggpht.com') ||
+    url.pathname.startsWith('/api/') ||
+    url.search.includes('filter=videos') ||
     e.request.method !== 'GET'
   ) {
     return;

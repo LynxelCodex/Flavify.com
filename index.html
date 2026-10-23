@@ -5442,7 +5442,7 @@
       const p = btn.querySelector('path');
       if (p) p.style.fill = liked ? 'currentColor' : 'none';
     }
-    function esc(s) { return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c])) }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c])) }
     function addStagger(parent) { [...parent.children].forEach((el, i) => { el.style.animationDelay = Math.min(i * .045, .5) + 's' }) }
     function spawnHearts(e) {
       const btn = e.currentTarget || e.target;
@@ -5467,21 +5467,34 @@
 
     function createCard(s, i, addMode = false) {
       const d = document.createElement('div');
-      d.className = 'tcard'; d.dataset.idx = i;
-      const playOrAdd = addMode
-        ? `<button class="tc-play" onclick="event.stopPropagation();addAndPlay({title:'${esc(s.title)}',artist:'${esc(s.artist)}',cover:'${s.cover}',vid:'${s.vid}'})" title="Add & play"><svg viewBox="0 0 24 24" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19" stroke="#fff" stroke-width="2.5"/><line x1="5" y1="12" x2="19" y2="12" stroke="#fff" stroke-width="2.5"/></svg></button>`
-        : `<button class="tc-play" onclick="event.stopPropagation();${i === state.idx ? 'playPause()' : 'loadTrack(' + i + ')'}" title="Play"><svg viewBox="0 0 24 24" width="18" height="18"><polygon points="5 3 19 12 5 21 5 3" fill="#fff"/></svg></button>`;
-      const mobOptBtn = `<div class="track-mob-opt" onclick="event.stopPropagation();openTrackActionSheet(${i})" title="Options">⋮</div>`;
-      d.innerHTML = `<div class="tc-cover"><img src="${esc(s.cover)}" alt="" loading="lazy"/>${playOrAdd}<span class="tc-now">Playing</span></div><div style="display:flex;align-items:center;justify-content:space-between;width:100%"><div style="min-width:0;flex:1"><p class="tc-title">${esc(s.title)}</p><p class="tc-artist"><span class="eq"><span class="eq-b"></span><span class="eq-b"></span><span class="eq-b"></span><span class="eq-b"></span></span>${esc(s.artist)}</p></div>${mobOptBtn}</div>`;
-      
+      d.className = 'tcard';
+      if (i >= 0) d.dataset.idx = i;
+      const icon = addMode
+        ? '<svg viewBox="0 0 24 24" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19" stroke="#fff" stroke-width="2.5"/><line x1="5" y1="12" x2="19" y2="12" stroke="#fff" stroke-width="2.5"/></svg>'
+        : '<svg viewBox="0 0 24 24" width="18" height="18"><polygon points="5 3 19 12 5 21 5 3" fill="#fff"/></svg>';
+      const cover = s.cover || (s.vid ? ytThumb(s.vid) : '');
+      const mobOptBtn = i >= 0 ? `<div class="track-mob-opt" title="Options">⋮</div>` : '';
+      d.innerHTML = `<div class="tc-cover"><img src="${esc(cover)}" alt="" loading="lazy"/><button class="tc-play" title="${addMode ? 'Add and play' : 'Play'}">${icon}</button><span class="tc-now">Playing</span></div><div style="display:flex;align-items:center;justify-content:space-between;width:100%"><div style="min-width:0;flex:1"><p class="tc-title">${esc(s.title)}</p><p class="tc-artist"><span class="eq"><span class="eq-b"></span><span class="eq-b"></span><span class="eq-b"></span><span class="eq-b"></span></span>${esc(s.artist)}</p></div>${mobOptBtn}</div>`;
+
+      d.querySelector('.tc-play').addEventListener('click', ev => {
+        ev.stopPropagation();
+        if (addMode) addAndPlay(s);
+        else if (i === state.idx) playPause();
+        else loadTrack(i);
+      });
+      const optBtn = d.querySelector('.track-mob-opt');
+      if (optBtn) optBtn.addEventListener('click', ev => { ev.stopPropagation(); openTrackActionSheet(i) });
+
       let touchTimer = null;
       d.addEventListener('touchstart', () => {
+        if (i < 0) return;
         touchTimer = setTimeout(() => { openTrackActionSheet(i); }, 500);
       }, { passive: true });
       d.addEventListener('touchend', () => clearTimeout(touchTimer));
       d.addEventListener('touchmove', () => clearTimeout(touchTimer));
 
-      if (!addMode) d.onclick = () => state.idx === i ? playPause() : loadTrack(i);
+      if (addMode) d.onclick = () => addAndPlay(s);
+      else d.onclick = () => state.idx === i ? playPause() : loadTrack(i);
       return d;
     }
     function createGreetCard(s, i) {
@@ -5650,36 +5663,187 @@
       });
     }
 
+    /* ── SEARCH ────────────────────────────────────────────────────────────
+       YouTube search works with NO API key: it asks public Piped/Invidious
+       mirrors (open CORS) in turn. A YouTube Data API key is still used first
+       if one was stored (they are per-project and expire, so never required). */
+    const YT_MIRRORS = [
+      { host: 'https://pipedapi.ducks.party', kind: 'piped' },
+      { host: 'https://api.piped.private.coffee', kind: 'piped' },
+      { host: 'https://invidious.f5.si', kind: 'invidious' }
+    ];
+    let ytMirrorIdx = 0;
+
+    function ytThumb(id) { return `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg` }
+    function ytClean(t) { return String(t == null ? '' : t).replace(/\s+/g, ' ').trim() }
+    function ytIdFromUrl(u) { const m = String(u || '').match(/[?&]v=([A-Za-z0-9_-]{11})|[\/]([A-Za-z0-9_-]{11})(?:[?&\/]|$)/); return m ? (m[1] || m[2]) : null }
+
+    async function fetchJSON(url, ms) {
+      const ctl = new AbortController();
+      const timer = setTimeout(() => ctl.abort(), ms || 7000);
+      try {
+        const r = await fetch(url, { signal: ctl.signal, cache: 'no-store', headers: { Accept: 'application/json' } });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return await r.json();
+      } finally { clearTimeout(timer) }
+    }
+
+    async function searchPiped(host, q) {
+      const d = await fetchJSON(`${host}/search?q=${encodeURIComponent(q)}&filter=videos`);
+      return (d.items || []).reduce((out, it) => {
+        const id = ytIdFromUrl(it.url);
+        if (id && it.title) out.push({ title: ytClean(it.title), artist: ytClean(it.uploaderName) || 'YouTube', cover: ytThumb(id), vid: id });
+        return out;
+      }, []);
+    }
+
+    async function searchInvidious(host, q) {
+      const d = await fetchJSON(`${host}/api/v1/search?q=${encodeURIComponent(q)}&type=video`);
+      return (Array.isArray(d) ? d : []).reduce((out, it) => {
+        if (!it || !it.videoId || !it.title) return out;
+        if (it.liveNow || it.lengthSeconds === 0) return out;
+        out.push({ title: ytClean(it.title), artist: ytClean(it.author) || 'YouTube', cover: ytThumb(it.videoId), vid: it.videoId });
+        return out;
+      }, []);
+    }
+
+    async function searchYT(q) {
+      if (YT_KEY) {
+        try {
+          const d = await fetchJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=20&q=${encodeURIComponent(q)}&key=${encodeURIComponent(YT_KEY)}`);
+          const items = (d.items || []).reduce((out, it) => {
+            const id = it && it.id && it.id.videoId;
+            if (!id || !it.snippet) return out;
+            out.push({
+              title: ytClean(it.snippet.title),
+              artist: ytClean(it.snippet.channelTitle) || 'YouTube',
+              cover: (it.snippet.thumbnails && (it.snippet.thumbnails.medium || it.snippet.thumbnails.high || it.snippet.thumbnails.default) || {}).url || ytThumb(id),
+              vid: id
+            });
+            return out;
+          }, []);
+          if (items.length) return { items, error: null };
+        } catch (e) { /* fall through to the mirrors */ }
+      }
+      const order = YT_MIRRORS.map((_, k) => YT_MIRRORS[(ytMirrorIdx + k) % YT_MIRRORS.length]);
+      for (const m of order) {
+        try {
+          const items = m.kind === 'piped' ? await searchPiped(m.host, q) : await searchInvidious(m.host, q);
+          if (items.length) {
+            ytMirrorIdx = YT_MIRRORS.indexOf(m);
+            const seen = new Set();
+            return { items: items.filter(s => seen.has(s.vid) ? false : seen.add(s.vid)), error: null };
+          }
+        } catch (e) { /* mirror down or slow — try the next one */ }
+      }
+      return { items: [], error: 'unreachable' };
+    }
+
     let searchTimer = null;
-    function renderSearch(q) {
+    let searchToken = 0;
+    function searchFromInput(raw) {
+      const v = String(raw == null ? '' : raw).trim();
+      if (!v) { renderSearch(''); return }
+      const id = extractYTVideoId(v);
+      if (id) { addFromYouTubeId(id); return }
+      renderSearch(v);
+    }
+    // Pull a video ID out of a YouTube link or a bare 11-character ID.
+    function extractYTVideoId(str) {
+      const patterns = [
+        /(?:youtube\.com\/watch\?[^\s]*v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/,
+        /^([a-zA-Z0-9_-]{11})$/ // Raw video ID
+      ];
+      for (const p of patterns) {
+        const m = String(str || '').match(p);
+        if (m) return m[1];
+      }
+      return null;
+    }
+
+    // Add and play any video by its ID. Title and cover come from YouTube
+    // oEmbed first, then a mirror, then a plain thumbnail. No API key needed.
+    async function addFromYouTubeId(vid) {
+      if (!vid) return;
+      const input = document.getElementById('searchInput');
+      if (input) input.value = '';
+      renderSearch('');
+      if (typeof showToast === 'function') showToast('Fetching YouTube track\u2026', '');
+      let s = null;
+      try {
+        const r = await fetch('https://www.youtube.com/oembed?url=' + encodeURIComponent('https://www.youtube.com/watch?v=' + vid) + '&format=json', { cache: 'no-store' });
+        if (r.ok) {
+          const data = await r.json();
+          s = { title: ytClean(data.title) || 'YouTube Track', artist: ytClean(data.author_name) || 'YouTube', cover: data.thumbnail_url || ytThumb(vid), vid };
+        }
+      } catch (e) { /* try the mirrors next */ }
+      if (!s) {
+        for (const m of YT_MIRRORS) {
+          if (m.kind !== 'piped') continue;
+          try {
+            const d = await fetchJSON(m.host + '/streams/' + encodeURIComponent(vid), 6000);
+            if (d && d.title) { s = { title: ytClean(d.title), artist: ytClean(d.uploader) || 'YouTube', cover: ytThumb(vid), vid }; break }
+          } catch (e) { /* next mirror */ }
+        }
+      }
+      if (!s) s = { title: 'YouTube Track (' + vid + ')', artist: 'YouTube', cover: ytThumb(vid), vid };
+      addAndPlay(s);
+      if (typeof showToast === 'function') showToast('Added: ' + s.title.slice(0, 34), '');
+    }
+    function searchSearchIcon() {
+      return '<span class="empty-state-icon" style="display:flex;justify-content:center;margin:12px 0;opacity:.4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>';
+    }
+    function searchDivider(text, count) {
+      const d = document.createElement('div');
+      d.style.cssText = 'grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:6px 0 2px;font-size:1.15rem;color:var(--t3);letter-spacing:.4px;text-transform:uppercase';
+      d.innerHTML = `<span style="white-space:nowrap">${esc(text)}${count ? ' · ' + count : ''}</span><span style="flex:1;height:1px;background:rgba(255,255,255,.1)"></span>`;
+      return d;
+    }
+
+    async function renderSearch(q) {
       const grid = document.getElementById('searchGrid');
       const info = document.getElementById('searchInfo');
+      if (!grid || !info) return;
+      const query = String(q == null ? '' : q).trim();
       grid.innerHTML = '';
-      if (!q.trim()) { info.textContent = 'Start typing to search…'; return }
-      const qL = q.toLowerCase();
-      const local = songs.filter(s => s.title.toLowerCase().includes(qL) || s.artist.toLowerCase().includes(qL));
+      if (!query) { info.textContent = 'Start typing to search…'; return }
+
+      const token = ++searchToken;
+      const qL = query.toLowerCase();
+      const local = songs.filter(s => (s.title || '').toLowerCase().includes(qL) || (s.artist || '').toLowerCase().includes(qL));
       if (local.length) {
-        info.textContent = `${local.length} result${local.length !== 1 ? 's' : ''} found`;
+        grid.appendChild(searchDivider('In your library', local.length));
         local.forEach(s => grid.appendChild(createCard(s, songs.indexOf(s))));
-        addStagger(grid); return;
       }
-      if (YT_KEY) {
-        info.innerHTML = `<span class="spinner"></span>Searching YouTube for "${esc(q)}"…`;
-        searchYT(q).then(res => {
-          if (!res.length) { info.innerHTML = '<span class="empty-state-icon" style="display:flex;justify-content:center;margin:12px 0;opacity:.4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><span style="display:block;text-align:center;color:var(--t3)">No results found.</span>'; return }
-          info.innerHTML = `<span class="yt-badge">YouTube</span> ${res.length} results — click + to add to library`;
-          res.forEach((s, i) => { const card = createCard(s, i, true); card.style.borderLeft = '2px solid var(--accent)'; grid.appendChild(card) });
-          addStagger(grid);
+
+      info.innerHTML = `<span class="spinner"></span>Searching YouTube for "${esc(query)}"…`;
+      const res = await searchYT(query);
+      if (token !== searchToken) return; // a newer search already took over
+
+      if (res.items.length) {
+        grid.appendChild(searchDivider('From YouTube', res.items.length));
+        res.items.forEach(s => {
+          const card = createCard(s, -1, true);
+          card.style.borderLeft = '2px solid var(--accent)';
+          grid.appendChild(card);
         });
-      } else { info.innerHTML = '<span class="empty-state-icon" style="display:flex;justify-content:center;margin:12px 0;opacity:.4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><span style="display:block;text-align:center;color:var(--t3)">No local results found.<br/><span style="font-size:1.15rem;color:var(--t2)">Tip: Paste any YouTube video URL or ID directly into search to stream it!</span></span>' }
-    }
-    async function searchYT(q) {
-      try {
-        const r = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(q)}&key=${YT_KEY}&maxResults=10`);
-        const d = await r.json();
-        if (!d.items) return [];
-        return d.items.map(it => ({ title: it.snippet.title, artist: it.snippet.channelTitle, cover: it.snippet.thumbnails.high?.url || it.snippet.thumbnails.default?.url || 'https://placehold.co/300x300/1a1a2e/888?text=YT', vid: it.id.videoId }));
-      } catch { return [] }
+        addStagger(grid);
+        info.innerHTML = local.length
+          ? `<span class="yt-badge">YouTube</span> ${res.items.length} more result${res.items.length !== 1 ? 's' : ''} — tap one to add and play`
+          : `<span class="yt-badge">YouTube</span> ${res.items.length} result${res.items.length !== 1 ? 's' : ''} — tap one to add and play`;
+        return;
+      }
+
+      if (res.error === 'unreachable') {
+        info.innerHTML = local.length
+          ? 'Could not reach YouTube right now — showing your library only.'
+          : searchSearchIcon() + `<span style="display:block;text-align:center;color:var(--t3)">Could not reach YouTube. Check your internet connection and try again.<br/><span style="font-size:1.15rem;color:var(--t2)">Tip: you can also paste a YouTube link or video ID straight into the search box.</span></span>`;
+        addStagger(grid);
+        return;
+      }
+
+      info.innerHTML = searchSearchIcon() + `<span style="display:block;text-align:center;color:var(--t3)">No results for "${esc(query)}".<br/><span style="font-size:1.15rem;color:var(--t2)">Tip: paste a YouTube link or video ID to stream it directly.</span></span>`;
+      addStagger(grid);
     }
     function addAndPlay(s) {
       const ex = songs.findIndex(x => x.vid === s.vid);
@@ -5970,11 +6134,17 @@
       document.getElementById('vidMiniExpand').onclick = expandVideo;
       document.getElementById('vidMiniClose').onclick = closeVideo;
 
-      document.getElementById('searchInput').oninput = e => {
+      document.getElementById('searchInput').addEventListener('input', e => {
         clearTimeout(searchTimer);
         const q = e.target.value;
-        searchTimer = setTimeout(() => renderSearch(q), 350);
-      };
+        searchTimer = setTimeout(() => searchFromInput(q), 350);
+      });
+      document.getElementById('searchInput').addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        clearTimeout(searchTimer);
+        searchFromInput(e.target.value);
+      });
 
       document.getElementById('sidebarToggle').onclick = () => document.getElementById('sidebar').classList.toggle('open');
       document.getElementById('artistBack').onclick = () => { viewHist.pop(); showView(viewHist[viewHist.length - 1] || 'home') };
@@ -6539,45 +6709,15 @@
       // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       // YOUTUBE URL DETECTION IN SEARCH
       // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      function extractYTVideoId(str) {
-        const patterns = [
-          /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-          /^([a-zA-Z0-9_-]{11})$/ // Raw video ID
-        ];
-        for (const p of patterns) {
-          const m = str.match(p);
-          if (m) return m[1];
-        }
-        return null;
-      }
-
+      // Paste a YouTube link or video ID into the search box: add and play it.
       const origSearchInput = document.getElementById('searchInput');
-      origSearchInput.addEventListener('paste', async (e) => {
-        const pasted = (e.clipboardData || window.clipboardData).getData('text');
-        const vid = extractYTVideoId(pasted.trim());
+      origSearchInput.addEventListener('paste', (e) => {
+        const pasted = ((e.clipboardData || window.clipboardData).getData('text') || '').trim();
+        const vid = extractYTVideoId(pasted);
         if (!vid) return;
         e.preventDefault();
-        origSearchInput.value = '';
-        showToast('Fetching YouTube track…', '⏳');
-        try {
-          // Try to get metadata via oEmbed (no API key needed)
-          const r = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${vid}&format=json`);
-          if (!r.ok) throw new Error('No metadata');
-          const data = await r.json();
-          const s = {
-            title: data.title || 'YouTube Track',
-            artist: data.author_name || 'YouTube',
-            cover: data.thumbnail_url || `https://img.youtube.com/vi/${vid}/hqdefault.jpg`,
-            vid
-          };
-          addAndPlay(s);
-          showToast(`Added: ${s.title.slice(0, 30)}`, '✅');
-        } catch {
-          // Fallback: use thumbnail, unknown title
-          const s = { title: 'YouTube Track (' + vid + ')', artist: 'YouTube', cover: `https://img.youtube.com/vi/${vid}/hqdefault.jpg`, vid };
-          addAndPlay(s);
-          showToast('Track added from URL', '✅');
-        }
+        clearTimeout(searchTimer);
+        addFromYouTubeId(vid);
       });
 
       // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
